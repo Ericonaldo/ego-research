@@ -1,0 +1,16 @@
+# Data files (too large for git)
+data/
+sample_extracted/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+*.env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
