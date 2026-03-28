@@ -1,0 +1,124 @@
+{
+  "device_subtype": "DVT-S",
+  "sensors": [
+    {
+      "label": "baro0",
+      "calibration_type": "SensorCalibrationType.BAROMETER_CALIBRATION"
+    },
+    {
+      "label": "camera-et-left",
+      "calibration_type": "SensorCalibrationType.CAMERA_CALIBRATION",
+      "image_width": 320,
+      "image_height": 240,
+      "focal_lengths": [
+        278.22579630351834,
+        277.59571853172065
+      ],
+      "principal_point": [
+        159.49988210511935,
+        119.5007446779534
+      ],
+      "model_name": "CameraModelType.KANNALA_BRANDT_K3"
+    },
+    {
+      "label": "camera-et-right",
+      "calibration_type": "SensorCalibrationType.CAMERA_CALIBRATION",
+      "image_width": 320,
+      "image_height": 240,
+      "focal_lengths": [
+        278.5321147498232,
+        278.11662474300766
+      ],
+      "principal_point": [
+        159.4999740098965,
+        119.50069462959215
+      ],
+      "model_name": "CameraModelType.KANNALA_BRANDT_K3"
+    },
+    {
+      "label": "camera-rgb",
+      "calibration_type": "SensorCalibrationType.CAMERA_CALIBRATION",
+      "image_width": 1408,
+      "image_height": 1408,
+      "focal_lengths": [
+        610.009719411475,
+        610.009719411475
+      ],
+      "principal_point": [
+        714.2956248395055,
+        707.293603993677
+      ],
+      "model_name": "CameraModelType.FISHEYE624"
+    },
+    {
+      "label": "camera-slam-left",
+      "calibration_type": "SensorCalibrationType.CAMERA_CALIBRATION",
+      "image_width": 640,
+      "image_height": 480,
+      "focal_lengths": [
+        241.7464243851944,
+        241.7464243851944
+      ],
+      "principal_point": [
+        320.628755658134,
+        242.6406788319894
+      ],
+      "model_name": "CameraModelType.FISHEYE624"
+    },
+    {
+      "label": "camera-slam-right",
+      "calibration_type": "SensorCalibrationType.CAMERA_CALIBRATION",
+      "image_width": 640,
+      "image_height": 480,
+      "focal_lengths": [
+        242.0349758695197,
+        242.0349758695197
+      ],
+      "principal_point": [
+        319.0967696465454,
+        240.9987475085507
+      ],
+      "model_name": "CameraModelType.FISHEYE624"
+    },
+    {
+      "label": "imu-left",
+      "calibration_type": "SensorCalibrationType.IMU_CALIBRATION"
+    },
+    {
+      "label": "imu-right",
+      "calibration_type": "SensorCalibrationType.IMU_CALIBRATION"
+    },
+    {
+      "label": "mag0",
+      "calibration_type": "SensorCalibrationType.MAGNETOMETER_CALIBRATION"
+    },
+    {
+      "label": "mic0",
+      "calibration_type": "SensorCalibrationType.MICROPHONE_CALIBRATION"
+    },
+    {
+      "label": "mic1",
+      "calibration_type": "SensorCalibrationType.MICROPHONE_CALIBRATION"
+    },
+    {
+      "label": "mic2",
+      "calibration_type": "SensorCalibrationType.MICROPHONE_CALIBRATION"
+    },
+    {
+      "label": "mic3",
+      "calibration_type": "SensorCalibrationType.MICROPHONE_CALIBRATION"
+    },
+    {
+      "label": "mic4",
+      "calibration_type": "SensorCalibrationType.MICROPHONE_CALIBRATION"
+    },
+    {
+      "label": "mic5",
+      "calibration_type": "SensorCalibrationType.MICROPHONE_CALIBRATION"
+    },
+    {
+      "label": "mic6",
+      "calibration_type": "SensorCalibrationType.MICROPHONE_CALIBRATION"
+    }
+  ]
+}

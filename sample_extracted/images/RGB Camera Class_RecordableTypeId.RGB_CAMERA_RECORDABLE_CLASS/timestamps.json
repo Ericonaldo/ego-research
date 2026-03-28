@@ -1,0 +1,23 @@
+[
+  {
+    "frame_index": 0,
+    "timestamp_ns": 148502526450,
+    "filename": "frame_000000_148502526450.png",
+    "width": 1408,
+    "height": 1408
+  },
+  {
+    "frame_index": 1,
+    "timestamp_ns": 148602527075,
+    "filename": "frame_000001_148602527075.png",
+    "width": 1408,
+    "height": 1408
+  },
+  {
+    "frame_index": 2,
+    "timestamp_ns": 148702527662,
+    "filename": "frame_000002_148702527662.png",
+    "width": 1408,
+    "height": 1408
+  }
+]

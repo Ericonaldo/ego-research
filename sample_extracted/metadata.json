@@ -1,0 +1,88 @@
+{
+  "streams": [
+    {
+      "stream_id": "211-1",
+      "type_name": "Eye Camera Class",
+      "type_id": "RecordableTypeId.EYE_CAMERA_RECORDABLE_CLASS",
+      "label": "Eye Camera Class_RecordableTypeId.EYE_CAMERA_RECORDABLE_CLASS",
+      "num_data": 123
+    },
+    {
+      "stream_id": "214-1",
+      "type_name": "RGB Camera Class",
+      "type_id": "RecordableTypeId.RGB_CAMERA_RECORDABLE_CLASS",
+      "label": "RGB Camera Class_RecordableTypeId.RGB_CAMERA_RECORDABLE_CLASS",
+      "num_data": 123
+    },
+    {
+      "stream_id": "231-1",
+      "type_name": "Stereo Audio Class",
+      "type_id": "RecordableTypeId.STEREO_AUDIO_RECORDABLE_CLASS",
+      "label": "Stereo Audio Class_RecordableTypeId.STEREO_AUDIO_RECORDABLE_CLASS",
+      "num_data": 286
+    },
+    {
+      "stream_id": "247-1",
+      "type_name": "Barometer Data Class",
+      "type_id": "RecordableTypeId.BAROMETER_RECORDABLE_CLASS",
+      "label": "Barometer Data Class_RecordableTypeId.BAROMETER_RECORDABLE_CLASS",
+      "num_data": 616
+    },
+    {
+      "stream_id": "281-1",
+      "type_name": "GPS Data Class",
+      "type_id": "RecordableTypeId.GPS_RECORDABLE_CLASS",
+      "label": "GPS Data Class_RecordableTypeId.GPS_RECORDABLE_CLASS",
+      "num_data": 13
+    },
+    {
+      "stream_id": "282-1",
+      "type_name": "Wifi Beacon Data Class",
+      "type_id": "RecordableTypeId.WIFI_BEACON_RECORDABLE_CLASS",
+      "label": "Wifi Beacon Data Class_RecordableTypeId.WIFI_BEACON_RECORDABLE_CLASS",
+      "num_data": 50
+    },
+    {
+      "stream_id": "283-1",
+      "type_name": "Bluetooth Beacon Data Class",
+      "type_id": "RecordableTypeId.BLUETOOTH_BEACON_RECORDABLE_CLASS",
+      "label": "Bluetooth Beacon Data Class_RecordableTypeId.BLUETOOTH_BEACON_RECORDABLE_CLASS",
+      "num_data": 24
+    },
+    {
+      "stream_id": "1201-1",
+      "type_name": "Camera Data (SLAM)",
+      "type_id": "RecordableTypeId.SLAM_CAMERA_DATA",
+      "label": "Camera Data (SLAM)_RecordableTypeId.SLAM_CAMERA_DATA",
+      "num_data": 123
+    },
+    {
+      "stream_id": "1201-2",
+      "type_name": "Camera Data (SLAM)",
+      "type_id": "RecordableTypeId.SLAM_CAMERA_DATA",
+      "label": "Camera Data (SLAM)_RecordableTypeId.SLAM_CAMERA_DATA",
+      "num_data": 123
+    },
+    {
+      "stream_id": "1202-1",
+      "type_name": "IMU Data (SLAM)",
+      "type_id": "RecordableTypeId.SLAM_IMU_DATA",
+      "label": "IMU Data (SLAM)_RecordableTypeId.SLAM_IMU_DATA",
+      "num_data": 12319
+    },
+    {
+      "stream_id": "1202-2",
+      "type_name": "IMU Data (SLAM)",
+      "type_id": "RecordableTypeId.SLAM_IMU_DATA",
+      "label": "IMU Data (SLAM)_RecordableTypeId.SLAM_IMU_DATA",
+      "num_data": 9763
+    },
+    {
+      "stream_id": "1203-1",
+      "type_name": "Magnetometer Data (SLAM)",
+      "type_id": "RecordableTypeId.SLAM_MAGNETOMETER_DATA",
+      "label": "Magnetometer Data (SLAM)_RecordableTypeId.SLAM_MAGNETOMETER_DATA",
+      "num_data": 121
+    }
+  ]
+}
