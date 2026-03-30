@@ -1,6 +1,6 @@
 # What we are building
 
-仔细调研meta 的 project Aria的开源dataset的相关信息，包括文档
+仔细调研meta 的 project Aria的开源dataset的相关信息，try your best to explore which research use which dataset to do what tasks, make a collection into a seperate markdown file.
 
 ---
 
