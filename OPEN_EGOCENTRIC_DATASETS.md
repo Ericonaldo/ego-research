@@ -287,3 +287,48 @@
    - `task -> dataset -> access cost -> infra cost` 决策表
 
 *最后更新：2026-04-15*
+
+---
+
+## 14. 第二轮补充：额外发现的开源 / 可获取 ego 数据
+
+这一轮继续往外扩之后，又找到了一批**确实存在公开入口、项目页、论文附带下载，或机构页面明确说明可获取**的 egocentric 数据。它们里有些是经典小集，有些是儿童视角和辅助技术方向的数据，之前没有放进主表。
+
+### 14.1 早期日常活动 / 社交 / 长时无控场景
+
+| 数据集 | Access | 粗略规模 | 核心模态 | 备注 |
+|--------|--------|----------|----------|------|
+| [GeorgiaTech Egocentric Activities (GTEA)](https://ai.stanford.edu/~alireza/GTEA/) | Open | 7 类日常活动，4 subjects | head-mounted video, labels, masks | 最早一批经典厨房/桌面活动数据，官方页仍可下载 |
+| [First-Person Social Interactions Dataset](https://ai.stanford.edu/~alireza/Disney/) | Open | 8 subjects 的 day-long Disney 场景视频 | day-long ego video, social interaction annotations | 经典社交第一视角数据，官方页仍可下载 |
+| [UT Egocentric (UTE)](https://vision.cs.utexas.edu/projects/egocentric/download_register.html) | Open | 4 段 3-5h 长视频，约 1.4GB | head-mounted long-form video | 早期长时第一人称视频基线，下载页仍可访问 |
+| [You2Me](https://vision.cs.utexas.edu/projects/you2me/) | Open / Project release | Kinect + CMU Panoptic 两种采集 | chest-mounted ego video, ego/interactee 3D skeletons | 更偏 egocentric body pose / dyadic interaction |
+
+### 14.2 儿童 / 婴幼儿 / developmental egocentric data
+
+| 数据集 | Access | 粗略规模 | 核心模态 | 备注 |
+|--------|--------|----------|----------|------|
+| [ChildLens](https://www.eva.mpg.de/comparative-cultural-psychology/technical-development/childlens/) | Register / Gated | 108.58h，62 children | child-worn ego video, audio, activity and location labels | Max Planck 页面明确写了 DOI 和联系 access |
+| [SAYCam](https://osf.io/t4eaf/) | Open | ~500h，3 infants | infant ego audio-video | 长期儿童视角核心数据 |
+| [BEV1 Dataset](https://inc.ucsd.edu/mplab/125/) | Open | 34MB / 44MB / 177MB 三个版本 | baby-eye-view images + labels | UCSD 历史页面仍提供免费下载，用于 infant/robot early vision |
+| [BabyView](https://babyview-project.github.io/babyview/) | Project-linked / Emerging | 论文描述 493h | child egocentric video, gyro/accelerometer, speech / pose eval labels | 项目页和论文都公开，但官方页更偏 project release 而不是传统 zip 下载 |
+
+### 14.3 Gaze / object-centric / assistive / robot command
+
+| 数据集 | Access | 粗略规模 | 核心模态 | 备注 |
+|--------|--------|----------|----------|------|
+| [EgoMon Gaze & Video Dataset](https://imatge-upc.github.io/egocentric-2016-saliency/) | Open | 7 段约 30 分钟视频，13K+ images | ego video + gaze | 小型 gaze / saliency 数据，官方页有下载 |
+| [TEgO: Teachable Egocentric Objects Dataset](https://iamlabumd.github.io/tego/) | Open | 19 objects，2 users | egocentric object images | 官方页明确可下载，且写明 `CC BY 4.0` |
+| [EgoNRG](https://utnuclearroboticspublic.github.io/egonrg-website/) | Open / Project-linked | 3,044 videos，160,639 annotated frames | four-view head-mounted gesture video, segmentation labels | 面向机器人导航手势，官方页挂了 dataset 链接 |
+
+### 14.4 这一轮新增数据的意义
+
+这批数据说明，除了 `Ego4D / Aria / HOT3D / Xperience-10M` 这种“大集”，还有几条很有价值但容易被漏掉的支线：
+
+- **早期但仍可用的经典小集**：`GTEA`, `UTE`, `First-Person Social Interactions`
+- **儿童与发展心理方向**：`ChildLens`, `SAYCam`, `BEV1`, `BabyView`
+- **辅助技术 / teachable interfaces**：`TEgO`
+- **机器人手势与人机交互**：`EgoNRG`
+
+如果目标不是“最大规模预训练”，而是更垂直的行为、注意力、儿童视角、辅助交互问题，这些数据经常比大而全的数据更合适。
+
+*第二轮补充更新：2026-04-15*

@@ -37,11 +37,18 @@
 | 数据集 | Access Friction | Storage Pressure | Preprocessing | Compute Readiness | 原因 |
 |--------|-----------------|------------------|---------------|-------------------|------|
 | EgoHands | Low | Small | Low | Laptop | 小规模、纯视觉、直接可用 |
+| GTEA | Low | Small | Low | Laptop | 经典早期 egocentric action 数据，下载直接 |
+| First-Person Social Interactions | Low | Medium | Low to Medium | Laptop / Single GPU | day-long social video，但格式仍比较朴素 |
+| UTE | Low | Small | Low | Laptop | 4 段长视频，访问门槛很低 |
 | GTEA Gaze / EGTEA Gaze+ | Low | Small | Low | Laptop | 经典小集，适合快速 baseline |
 | TREK-150 | Low | Small | Low | Laptop / Single GPU | tracking benchmark，负担低 |
 | BEOID | Low | Small | Low | Laptop | 老但轻量 |
+| BEV1 | Low | Small | Low | Laptop | infant / robot early vision 轻量小集 |
+| EgoMon | Low | Small | Low | Laptop | gaze / saliency 小数据，处理简单 |
+| TEgO | Low | Small | Low | Laptop | egocentric object images，直接下载可用 |
 | VEDI | Low | Small | Low to Medium | Laptop | 专项数据，体量不大 |
 | EgoK360 | Low | Small to Medium | Low | Laptop / Single GPU | 360 视频但总体可控 |
+| EgoNRG | Low to Medium | Medium | Medium | Single GPU | 多视角 head-mounted gesture 数据，分割标注较多 |
 | EPIC-KITCHENS-100 | Low | Medium | Medium | Single GPU / Workstation | 视频量不小，但工具链成熟 |
 | EPIC-KITCHENS-55 | Low | Medium | Medium | Single GPU | 经典公开视频集 |
 | Charades-Ego | Low | Medium | Low to Medium | Single GPU | paired video，门槛较低 |
@@ -53,6 +60,7 @@
 | ARCTIC | Medium | Large | High | Workstation / Multi-GPU | articulated object + contact + mesh |
 | HOI4D | Medium | Large | High | Workstation | RGB-D / point cloud / HOI 任务多 |
 | EgoBody | Medium | Large | High | Workstation | body pose / shape 管线复杂 |
+| You2Me | Medium | Medium | Medium to High | Single GPU / Workstation | ego/interactee skeleton 与视频同步，适合 body pose 方向 |
 | Nymeria | High | Large | Very High | Workstation / Multi-GPU | 多设备、多模态、body mocap + language |
 | ADT | Medium | Large | High | Workstation / Multi-GPU | 3D GT 丰富，文件重，格式复杂 |
 | AEA | Medium | Medium to Large | Medium to High | Workstation | Aria + MPS + transcript |
@@ -65,6 +73,7 @@
 | Egocentric-10K | High | Extreme | Very High | Multi-GPU / Cluster | 16.4TB+ 且以工业大规模预训练为目标 |
 | Xperience-10M | Very High | Extreme | Very High | Cluster | gated + 约 1PB + 结构化多模态处理链 |
 | EgoLife | Medium to High | Large | High | Workstation / Multi-GPU | 长时上下文、多模态、同步 exo |
+| ChildLens | Medium to High | Medium to Large | Medium | Single GPU / Workstation | 虽为公开科研用途，但需要 DOI / 联系方式 access |
 | H2TC | Medium | Medium to Large | High | Workstation | 协作、动作和多传感器同步 |
 | HEV-I | Low | Small to Medium | Medium | Single GPU | driving-specific，规模不大 |
 | JRDB | Medium | Large | High | Workstation | robot-centric perception，3D / tracking 管线偏重 |
@@ -127,9 +136,13 @@
 这类最适合快速跑通：
 
 - EgoHands
+- GTEA
+- UTE
 - GTEA Gaze / EGTEA Gaze+
 - TREK-150
 - BEOID
+- BEV1
+- TEgO
 - EPIC-KITCHENS
 - VEDI
 
@@ -149,6 +162,8 @@
 - HoloAssist
 - Assembly101
 - EgoBody
+- ChildLens
+- You2Me
 
 特点：
 
@@ -187,9 +202,12 @@
 代表：
 
 - EgoHands
+- GTEA
 - TREK-150
 - EgoSchema
 - Charades-Ego
+- TEgO
+- BEV1
 
 ### 5.2 中高成本
 
@@ -205,6 +223,8 @@
 - HoloAssist
 - Assembly101
 - ADT / AEA / HOT3D
+- ChildLens
+- You2Me
 - Nymeria
 - Xperience-10M
 
@@ -258,8 +278,9 @@
 ## 7. 最后的判断
 
 1. 最低成本的起步数据仍然是 `EgoHands / GTEA Gaze / TREK-150 / EPIC-KITCHENS` 这一层。
-2. 真正的研究主战场仍然是 `Ego4D / Ego-Exo4D / Aria family / HOT3D / Assembly101`。
-3. 如果你的方向是 embodied AI，真正需要提前评估的是 `数据访问成本 + 存储成本 + 预处理成本`，而不是只看 benchmark 名气。
-4. `Xperience-10M` 和 `Egocentric-10K` 的问题从来不是“值不值得看”，而是“你现在的基础设施是否接得住”。
+2. 如果任务更偏小众但更垂直，`ChildLens / TEgO / First-Person Social Interactions / You2Me` 这类数据反而更省时间。
+3. 真正的研究主战场仍然是 `Ego4D / Ego-Exo4D / Aria family / HOT3D / Assembly101`。
+4. 如果你的方向是 embodied AI，真正需要提前评估的是 `数据访问成本 + 存储成本 + 预处理成本`，而不是只看 benchmark 名气。
+5. `Xperience-10M` 和 `Egocentric-10K` 的问题从来不是“值不值得看”，而是“你现在的基础设施是否接得住”。
 
 *最后更新：2026-04-15*

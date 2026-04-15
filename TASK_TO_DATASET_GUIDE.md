@@ -186,6 +186,39 @@
 
 ---
 
+## 10.1 儿童视角 / developmental / early-life learning
+
+| 优先级 | 数据集 | 为什么 |
+|--------|--------|--------|
+| 第一梯队 | SAYCam | 长期 infant perspective，最有代表性的儿童 ego 数据之一 |
+| 第一梯队 | ChildLens | 3-5 岁儿童日常活动 + 音频 + location / activity labels，更新、更系统 |
+| 第二梯队 | BEV1 | 很早期但很轻量，适合 infant / robot early visual learning baseline |
+| 第二梯队 | BabyView | 高分辨率儿童视角和更现代的采集硬件，适合发展心理与鲁棒感知 |
+
+### 实际建议
+
+- 做 developmental learning / child-centered representation：`SAYCam + ChildLens`
+- 只想先快速验证 infant-style视觉学习：`BEV1`
+- 要研究更现代儿童佩戴设备和采集流程：`BabyView`
+
+---
+
+## 10.2 社交互动 / 对话 / dyadic interaction
+
+| 优先级 | 数据集 | 为什么 |
+|--------|--------|--------|
+| 第一梯队 | EgoCom | 多人对话、多模态通信数据很完整 |
+| 第二梯队 | First-Person Social Interactions Dataset | day-long social life 数据，经典且开放 |
+| 第二梯队 | You2Me | ego-interactee body pose 关系很强，适合 dyadic body modeling |
+
+### 实际建议
+
+- 对话与 multi-person communication：`EgoCom`
+- 长时日常社交观察：`First-Person Social Interactions`
+- 社交中的身体姿态建模：`You2Me`
+
+---
+
 ## 11. 机器人 / imitation / world model
 
 | 目标 | 推荐数据集 | 原因 |
@@ -224,5 +257,6 @@
 2. 技能和程序化任务最值得看 `Ego-Exo4D + Assembly101 + HoloAssist`。
 3. 手-物体交互和 dexterous manipulation 已经是一条独立赛道，优先看 `HOT3D + ARCTIC + HOI4D`。
 4. 若目标转向 embodied foundation model，优先级会明显转到 `Xperience-10M + Egocentric-10K + EgoLife + Nymeria`。
+5. 如果问题本身偏儿童认知、社交互动或 teachable interfaces，大型通用数据不一定是最优，`ChildLens / SAYCam / First-Person Social Interactions / TEgO` 往往更对口。
 
 *最后更新：2026-04-15*
