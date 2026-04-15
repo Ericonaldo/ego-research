@@ -4,14 +4,14 @@ Process Project Aria MPS (Machine Perception Services) outputs.
 Handles trajectory, point cloud, eye gaze, and hand tracking data.
 
 Usage:
-    python process_mps.py <mps_dir> [--output_dir OUTPUT_DIR]
+    python aria/scripts/process_mps.py <mps_dir> [--output_dir OUTPUT_DIR]
 
 Examples:
     # Standard MPS directory layout (with slam/ and eye_gaze/ subdirs)
-    python process_mps.py data/seq01/mps/ --output_dir processed/
+    python aria/scripts/process_mps.py aria/data/sample/mps_sample/ --output_dir aria/data/sample/mps_processed/
 
     # Flat layout (trajectory and eye_gaze at top level)
-    python process_mps.py data/sample/mps_sample/ --output_dir processed/
+    python aria/scripts/process_mps.py aria/data/sample/mps_sample/ --output_dir aria/data/sample/mps_processed/
 """
 
 import argparse

@@ -3,10 +3,10 @@
 Process Project Aria VRS files - extract images, IMU data, and metadata.
 
 Usage:
-    python process_vrs.py <vrs_file> [--output_dir OUTPUT_DIR]
+    python aria/scripts/process_vrs.py <vrs_file> [--output_dir OUTPUT_DIR]
 
 Example:
-    python process_vrs.py data/recording.vrs --output_dir extracted/
+    python aria/scripts/process_vrs.py aria/data/sample/mps_sample/sample.vrs --output_dir aria/data/sample_extracted/
 """
 
 import argparse

@@ -1,193 +1,249 @@
-# Project Aria 数据集下载指南
+# Egocentric 数据集访问与下载指南
 
-## 前提条件
+这份文档把仓库里涉及的主流 **egocentric / first-person** 数据访问流程统一整理。当前覆盖：
 
-- Python 3.9-3.12（3.13 不支持）
-- 本机已配置好环境：`conda activate aria`（Python 3.11 + projectaria-tools 2.1.1）
+- Project Aria 家族数据集
+- Ego4D / Ego-Exo4D
+- Xperience-10M
 
-> **重要**：当前服务器无法直接访问 Meta CDN（`fbcdn.net` 被墙），需通过代理或在海外机器上下载后传回。
+需要先说明一点：
+
+- 仓库中的 `Aria` 处理脚本现在位于 `aria/scripts/`
+- `Xperience-10M` 现在已补充轻量 annotation 处理脚本，位于 `xperience/scripts/`
 
 ---
 
-## 方法一：通过官方 CLI 下载（标准流程）
+## 1. 快速对比
 
-### Step 1: 获取 CDN 文件
+| 数据生态 | 访问入口 | 主要下载方式 | 当前仓库支持度 |
+|----------|----------|--------------|----------------|
+| Project Aria 家族 | projectaria.com | CDN JSON + `aria_dataset_downloader` | 高 |
+| Ego4D / Ego-Exo4D | ego4d-data.org | License + CLI / AWS 凭证 | 中 |
+| Xperience-10M | Hugging Face + Ropedia | gated access + 人工审核 + 协议签署 | 低到中 |
 
-1. 打开浏览器，访问目标数据集页面：
+---
 
-| 数据集 | 注册页面 |
-|--------|----------|
-| Aria Digital Twin (ADT) | https://www.projectaria.com/datasets/adt/ |
-| Aria Everyday Activities (AEA) | https://www.projectaria.com/datasets/aea/ |
-| Aria Synthetic Environments (ASE) | https://www.projectaria.com/datasets/ase/ |
+## 2. Project Aria 家族
+
+### 2.1 前提条件
+
+- Python 3.9-3.12
+- 当前本机环境可用：`conda activate aria`
+- `projectaria-tools` 已安装
+
+> 注意：如果所在网络无法直接访问 Meta CDN，需要代理或在海外机器下载后回传。
+
+### 2.2 标准访问流程
+
+1. 打开目标数据集页面：
+
+| 数据集 | 页面 |
+|--------|------|
+| ADT | https://www.projectaria.com/datasets/adt/ |
+| AEA | https://www.projectaria.com/datasets/aea/ |
+| ASE | https://www.projectaria.com/datasets/ase/ |
 | HOT3D | https://www.projectaria.com/datasets/hot3D/ |
 | Nymeria | https://www.projectaria.com/datasets/nymeria/ |
-| Digital Twin Catalog (DTC) | https://www.projectaria.com/datasets/dtc/ |
-| Aria Everyday Objects (AEO) | https://www.projectaria.com/datasets/aeo/ |
+| DTC | https://www.projectaria.com/datasets/dtc/ |
+| AEO | https://www.projectaria.com/datasets/aeo/ |
 | Reading in the Wild | https://www.projectaria.com/datasets/reading-in-the-wild/ |
 
-2. 输入 **email 地址**
-3. 勾选同意 **Dataset License Agreement**（非商业研究用途）
-4. 点击 **"Access the Datasets"**
-5. 下载得到 JSON 文件，例如 `adt_download_urls.json`
-
-> CDN 链接有效期 14-30 天，过期后需重新获取。
-
-### Step 2: 查看可下载内容
+2. 输入邮箱并同意 license
+3. 下载获得 CDN JSON，例如 `adt_download_urls.json`
+4. 通过官方 CLI 下载：
 
 ```bash
 conda activate aria
 aria_dataset_downloader -c <cdn_file.json> -o <output_dir>/
 ```
 
-不指定 `-d` 参数时会列出所有可用的数据类型：
-
-| ID | 数据类型 | 说明 |
-|----|----------|------|
-| 0 | VRS | 原始传感器数据（相机、IMU、音频等） |
-| 1 | MPS SLAM | 闭环/开环轨迹 |
-| 2 | MPS Point Cloud | 半稠密 3D 点云 |
-| 3 | MPS Eye Gaze | 眼动追踪向量 |
-| 4 | MPS Online Calibration | 实时标定数据 |
-| 5 | MPS Hand Tracking | 手部追踪 |
-| 6 | Ground Truth | 标注数据（ADT 专有） |
-| 7 | Depth Images | 深度图（ADT 专有） |
-| 8 | Segmentation | 分割图（ADT 专有） |
-| 9 | Other | 合成渲染等 |
-
-### Step 3: 执行下载
+### 2.3 常用下载示例
 
 ```bash
-# 只下载 VRS 文件（最小，推荐先试）
+# 只下载 VRS
 aria_dataset_downloader -c adt_download_urls.json -o ./data/adt/ -d 0
 
 # 下载 VRS + 轨迹 + 眼动
 aria_dataset_downloader -c adt_download_urls.json -o ./data/adt/ -d 0 1 3
 
-# 只下载特定 sequence
+# 下载单个 sequence
 aria_dataset_downloader -c adt_download_urls.json -o ./data/adt/ \
   -l Apartment_release_golden_skeleton_seq100_10s_sample_M1292 \
   -d 0 1 2 3 4 5 6 7 8 9
-
-# 下载全部
-aria_dataset_downloader -c adt_download_urls.json -o ./data/adt/ -d all -l all
 ```
 
-**常用参数**：
-- `-c` / `--cdn_file`：CDN JSON 文件路径
-- `-o` / `--output_folder`：输出目录
-- `-d` / `--data_types`：数据类型 ID 列表（空格分隔），`all` 下载全部
-- `-l` / `--sequence_names`：sequence 名称列表，`all` 下载全部
-- `-w` / `--overwrite`：强制覆盖已下载文件
+### 2.4 常用参数
 
-**断点续传**：重复运行同一命令，已下载的文件会自动跳过。
+- `-c` / `--cdn_file`: CDN JSON
+- `-o` / `--output_folder`: 输出目录
+- `-d` / `--data_types`: 数据类型 ID
+- `-l` / `--sequence_names`: sequence 名称
+- `-w` / `--overwrite`: 覆盖已下载文件
 
-### Step 4: 传到目标服务器（如果在其他机器下载）
-
-```bash
-rsync -avz --progress ./data/adt/ target_server:/data/projects/aria/data/adt/
-```
-
----
-
-## 方法二：通过代理下载
-
-如果本机有可用代理：
-
-```bash
-export https_proxy=http://your_proxy:port
-export http_proxy=http://your_proxy:port
-aria_dataset_downloader -c adt_download_urls.json -o ./data/adt/ -d 0
-```
-
-测试 Meta CDN 连通性：
-```bash
-curl --connect-timeout 10 https://scontent.fftw1-1.fna.fbcdn.net
-```
-
----
-
-## 方法三：从 GitHub 下载测试数据（已完成）
-
-GitHub 仓库包含小型测试数据，不需要注册。已下载到 `/data/projects/aria/data/sample/`：
-
-```bash
-BASE="https://raw.githubusercontent.com/facebookresearch/projectaria_tools/main/data/gen1"
-
-# MPS 样本（~75MB VRS + 轨迹/眼动/手部 CSV）
-curl -L -o sample.vrs "$BASE/mps_sample/sample.vrs"
-curl -L -o closed_loop_trajectory.csv "$BASE/mps_sample/trajectory/closed_loop_trajectory.csv"
-
-# ADT 测试数据（~5MB）
-curl -L -o video.vrs "$BASE/aria_digital_twin_test_data/video.vrs"
-curl -L -o depth_images.vrs "$BASE/aria_digital_twin_test_data/depth_images.vrs"
-curl -L -o segmentations.vrs "$BASE/aria_digital_twin_test_data/segmentations.vrs"
-
-# AEA 测试数据（~3.5MB）
-curl -L -o recording.vrs "$BASE/aria_everyday_activities_test_data/recording.vrs"
-```
-
----
-
-## 方法四：Dataset Explorer 图形界面
-
-1. 访问 https://explorer.projectaria.com/
-2. 可浏览、筛选、预览各数据集的 sequences
-3. 选择需要的 sequences 后生成下载文件
-4. 支持按场景、活动类型、时长等条件过滤
-
----
-
-## 方法五：使用下载脚本
-
-项目中已提供 `download_dataset.sh` 封装脚本：
-
-```bash
-# 用法
-bash download_dataset.sh <cdn_file.json> [output_dir] [data_types]
-
-# 示例
-bash download_dataset.sh adt_download_urls.json ./data/adt "0 1 3"
-bash download_dataset.sh aea_download_urls.json ./data/aea "0"
-bash download_dataset.sh adt_download_urls.json ./data/adt "0 1 2 3 4 5 6 7 8 9"
-```
-
----
-
-## 下载后处理
+### 2.5 下载后处理
 
 ```bash
 conda activate aria
 
-# 从 VRS 提取图像、IMU、标定数据
-python process_vrs.py <file.vrs> -o <output_dir> [--max_frames N] [--skip_imu]
+# 提取 VRS 中的图像、IMU、标定
+python aria/scripts/process_vrs.py <file.vrs> -o <output_dir>
 
-# 处理 MPS 输出（轨迹、点云、眼动）
-python process_mps.py <mps_dir> -o <output_dir>
+# 处理 MPS 结果
+python aria/scripts/process_mps.py <mps_dir> -o <output_dir>
+```
+
+### 2.6 仓库内现成脚本
+
+```bash
+bash aria/scripts/download_dataset.sh <cdn_file.json> [output_dir] [data_types]
+```
+
+示例：
+
+```bash
+bash aria/scripts/download_dataset.sh adt_download_urls.json ./aria/data/adt "0 1 3"
+bash aria/scripts/download_dataset.sh aea_download_urls.json ./aria/data/aea "0"
 ```
 
 ---
 
-## 各数据集推荐下载策略
+## 3. Ego4D / Ego-Exo4D
 
-| 数据集 | 大小 | 推荐 |
-|--------|------|------|
-| **AEA** | ~353 GB | 先下 `-d 0` (VRS only)，约 100GB |
-| **ADT** | ~3.5 TB | 先下单个 sequence 全部数据类型试跑 |
-| **ASE** | ~23 TB | 使用专用下载器，按需下载子集 |
-| **Ego-Exo4D** | Very Large | 通过 Ego-Exo4D 官网单独申请 |
-| **HOT3D** | Medium | 通过 HOT3D GitHub 仓库专用下载器 |
-| **Nymeria** | Large | 通过官网 CDN 文件下载 |
-| **DTC** | Medium | 3D 模型 + 少量视频 |
-| **AEO** | Small | 25 sequences，可全量下载 |
-| **Reading in the Wild** | Medium | 通过 Dataset Explorer 筛选下载 |
+### 3.1 访问入口
+
+- Ego4D 官网: https://ego4d-data.org/
+- 文档: https://ego4d-data.org/docs/
+- Start Here: https://ego4d-data.org/docs/start-here/
+- Ego-Exo4D 文档: https://docs.ego-exo4d-data.org/
+
+### 3.2 访问流程
+
+官方流程通常是：
+
+1. 在 `ego4ddataset.com` 或官方入口签署数据使用协议
+2. 等待审核和凭证发放
+3. 使用官方 CLI 下载
+
+官方文档提到审批一般需要约 **48 小时**。
+
+### 3.3 CLI 示例
+
+官方文档给出的典型形式类似：
+
+```bash
+ego4d --output_directory="~/ego4d_data" --datasets full_scale annotations
+```
+
+也可以按 benchmark / annotation 子集下载，具体以官方 CLI 文档为准：
+
+- https://ego4d-data.org/docs/CLI/
+
+### 3.4 实际建议
+
+- 如果你做的是 `video understanding / VLM / NLQ / forecasting`，优先申请 Ego4D
+- 如果你做的是 `skill learning / ego-exo transfer / proficiency`，优先申请 Ego-Exo4D
+- 这两套数据的工程重心更偏视频和 benchmark，不像 Aria 或 Xperience-10M 那样强调统一 HDF5 式多传感器结构
 
 ---
 
-## 注意事项
+## 4. Xperience-10M
 
-1. **License**：所有数据集仅限 **非商业研究用途**
-2. **Python 版本**：projectaria-tools 不支持 Python 3.13，需使用 3.9-3.12
-3. **ASE 数据集**使用独立的 Python 下载脚本，不使用 `aria_dataset_downloader`
-4. **Ego-Exo4D** 有独立的申请和下载流程，见 https://ego-exo4d-data.org/
-5. **HOT3D** 使用 GitHub 仓库中的专用下载器，见 https://github.com/facebookresearch/hot3d
+### 4.1 公开入口
+
+- Release blog: https://ropedia.com/blog/20260316_xperience_10m
+- Dataset card: https://huggingface.co/datasets/ropedia-ai/xperience-10m
+- Sample: https://huggingface.co/datasets/ropedia-ai/xperience-10m-sample
+- Toolkit: https://github.com/Ropedia/HOMIE-toolkit
+
+### 4.2 当前访问机制
+
+截至 **2026-04-15**，公开信息显示 Xperience-10M 的访问具备以下特征：
+
+- Hugging Face gated access
+- 人工审核
+- 仅限 approved non-commercial use
+- 可能需要完成额外的 DocuSign 协议签署
+- 大规模数据可能通过 controlled distribution 提供
+
+这意味着它和公开 CLI 拉取型数据集不同，更像 `申请制 + 分发制`。
+
+### 4.3 建议的实际顺序
+
+#### Step 1: 先看样本和工具链
+
+先下载 / 阅读：
+
+- `xperience-10m-sample`
+- `HOMIE-toolkit`
+- 本仓库里的 `xperience/data/sample_trimmed/`
+
+这样可以先搞清楚 episode 的目录结构、`annotation.hdf5` 的字段、六路视频如何对齐。
+
+#### Step 2: 正式申请主数据
+
+进入 Hugging Face dataset card 页面后：
+
+1. 申请 access
+2. 按页面提示完成额外协议签署
+3. 等待人工审核
+
+页面提示中明确说明：如果只提交了 access request，但没有完成需要的协议签署，申请会一直处于 pending。
+
+### 4.4 为什么不能直接当成“普通下载任务”
+
+因为它有两个硬门槛：
+
+- 数据本身非常大，官方声明约 **~1 PB**
+- 数据包含真实第一人称多模态记录，隐私与责任使用约束更强
+
+所以更现实的路径是：
+
+1. 用 sample 和 toolkit 验证技术可行性
+2. 评估存储与训练预算
+3. 再决定是否推进全量 access
+
+### 4.5 仓库内现成脚本
+
+```bash
+python xperience/scripts/process_xperience.py xperience/data/sample_trimmed -o /tmp/xp_out
+python xperience/scripts/build_sample_subset.py /path/to/annotation.hdf5 -o xperience/data/sample_trimmed
+```
+
+---
+
+## 5. 推荐下载策略
+
+| 目标 | 推荐数据 |
+|------|----------|
+| 先跑通 Aria 工具链 | AEA sample / ADT sample / mps_sample |
+| 先做公开视频理解 | Ego4D |
+| 先做技能理解 | Ego-Exo4D |
+| 先验证 embodied 多模态结构 | Xperience-10M Sample |
+| 先做高精度手-物体 | HOT3D |
+| 先做身体动作建模 | Nymeria |
+
+---
+
+## 6. 各数据集的现实成本
+
+| 数据集 | 下载门槛 | 存储压力 | 预处理复杂度 |
+|--------|----------|----------|--------------|
+| AEA / AEO | 低到中 | 中 | 中 |
+| ADT | 中 | 高 | 中到高 |
+| ASE | 高 | 很高 | 高 |
+| Ego4D | 中 | 高 | 中 |
+| Ego-Exo4D | 中 | 高 | 中到高 |
+| HOT3D | 中 | 中 | 中到高 |
+| Nymeria | 中 | 高 | 高 |
+| Xperience-10M | 高 | 极高 | 高 |
+
+---
+
+## 7. 备注
+
+1. 本仓库当前没有 `Ego4D` 的专用下载脚本。
+2. 如果后续要继续改造这个仓库，优先应该补：
+   - `Ego4D` 的最小下载与目录说明
+   - `dataset access checklist`
+
+*最后更新：2026-04-15*

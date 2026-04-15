@@ -1,0 +1,256 @@
+{
+  "annotation_file": "annotation.hdf5",
+  "top_level_groups": [
+    "calibration",
+    "caption",
+    "depth",
+    "full_body_mocap",
+    "hand_mocap",
+    "imu",
+    "metadata",
+    "slam",
+    "video"
+  ],
+  "frame_count": 8,
+  "duration_sec": 0.34705275,
+  "video_timestamp_first": "72857807732824",
+  "video_timestamp_last": "72858154785574",
+  "depth": {
+    "shape": [
+      8,
+      256,
+      256
+    ],
+    "min": 0.16499313712120056,
+    "max": 2.67332124710083,
+    "scale": 0.5
+  },
+  "slam": {
+    "pose_shape": [
+      8,
+      4
+    ],
+    "point_cloud_shape": [
+      4089,
+      3
+    ]
+  },
+  "hand_mocap": {
+    "left_shape": [
+      8,
+      21,
+      3
+    ],
+    "right_shape": [
+      8,
+      21,
+      3
+    ]
+  },
+  "full_body_mocap": {
+    "keypoints_shape": [
+      8,
+      52,
+      3
+    ],
+    "contacts_shape": [
+      8,
+      21
+    ]
+  },
+  "imu": {
+    "shape": [
+      80,
+      3
+    ],
+    "keyframe_count": 8
+  },
+  "metadata": {
+    "body_height": 1.78,
+    "device_id": "7211577584",
+    "device_version": "v2",
+    "health_report": "{\n  \"generated_at\": \"2026-03-09T15:38:37.288949+00:00\",\n  \"recordings\": [\n    {\n      \"failures\": [],\n      \"file_integrity\": {\n        \"complete\": true,\n        \"expected\": {\n          \"files\": [\n            \"imu.csv\",\n            \"metadata.json\",\n            \"mjpeg.bin\"\n          ],\n          \"missing\": [],\n          \"wav_found\": [\n            \"20260213_120959.282153338-20260213_121546.857668503...<truncated>",
+    "other": "{}",
+    "time_created": "2026-03-09T18:06:14.358989+00:00"
+  },
+  "calibration_cameras": {
+    "cam0": {
+      "D": {
+        "shape": [
+          4
+        ],
+        "dtype": "float64"
+      },
+      "K": {
+        "shape": [
+          4
+        ],
+        "dtype": "float64"
+      },
+      "T_c_b": {
+        "shape": [
+          4,
+          4
+        ],
+        "dtype": "float64"
+      },
+      "camera_model": {
+        "shape": [],
+        "dtype": "object",
+        "value": "pinhole"
+      },
+      "distortion_model": {
+        "shape": [],
+        "dtype": "object",
+        "value": "equidistant"
+      }
+    },
+    "cam01": {
+      "K": {
+        "shape": [
+          4
+        ],
+        "dtype": "float64"
+      },
+      "T_c0_b": {
+        "shape": [
+          4,
+          4
+        ],
+        "dtype": "float64"
+      },
+      "baseline": {
+        "shape": [],
+        "dtype": "float64",
+        "value": 0.14530696269782056
+      }
+    },
+    "cam1": {
+      "D": {
+        "shape": [
+          4
+        ],
+        "dtype": "float64"
+      },
+      "K": {
+        "shape": [
+          4
+        ],
+        "dtype": "float64"
+      },
+      "T_cn_cnm1": {
+        "shape": [
+          4,
+          4
+        ],
+        "dtype": "float64"
+      },
+      "camera_model": {
+        "shape": [],
+        "dtype": "object",
+        "value": "pinhole"
+      },
+      "distortion_model": {
+        "shape": [],
+        "dtype": "object",
+        "value": "equidistant"
+      }
+    },
+    "cam2": {
+      "D": {
+        "shape": [
+          4
+        ],
+        "dtype": "float64"
+      },
+      "K": {
+        "shape": [
+          4
+        ],
+        "dtype": "float64"
+      },
+      "T_cn_cnm1": {
+        "shape": [
+          4,
+          4
+        ],
+        "dtype": "float64"
+      },
+      "camera_model": {
+        "shape": [],
+        "dtype": "object",
+        "value": "pinhole"
+      },
+      "distortion_model": {
+        "shape": [],
+        "dtype": "object",
+        "value": "equidistant"
+      }
+    },
+    "cam3": {
+      "D": {
+        "shape": [
+          4
+        ],
+        "dtype": "float64"
+      },
+      "K": {
+        "shape": [
+          4
+        ],
+        "dtype": "float64"
+      },
+      "T_cn_cnm1": {
+        "shape": [
+          4,
+          4
+        ],
+        "dtype": "float64"
+      },
+      "camera_model": {
+        "shape": [],
+        "dtype": "object",
+        "value": "pinhole"
+      },
+      "distortion_model": {
+        "shape": [],
+        "dtype": "object",
+        "value": "equidistant"
+      }
+    }
+  },
+  "caption": {
+    "main_task": "Making pour-over coffee",
+    "total_frames": 5822,
+    "total_tokens": 181010,
+    "segment_count": 18,
+    "first_segment_preview": {
+      "segment_id": 0,
+      "start_frame": "72857807732824",
+      "end_frame": "72877756316292",
+      "sub_task": "Pick up and position kettle",
+      "action_count": 2,
+      "sampled_frame_count": 10,
+      "object_keyframe_count": 3
+    }
+  },
+  "derived_from": {
+    "source_annotation": "/tmp/xperience_official_sample/annotation.hdf5",
+    "source_dataset": "https://huggingface.co/datasets/ropedia-ai/xperience-10m-sample",
+    "trimmed_frame_count": 8
+  },
+  "generated_files": {
+    "annotation_contents": "annotation_contents.json",
+    "depth_previews": [
+      "preview/depth_000.png",
+      "preview/depth_001.png",
+      "preview/depth_002.png"
+    ],
+    "pose_previews": [
+      "preview/hand_left_frame0.json",
+      "preview/hand_right_frame0.json",
+      "preview/body_frame0.json"
+    ],
+    "point_cloud_preview": "preview/point_cloud_preview.npy"
+  }
+}

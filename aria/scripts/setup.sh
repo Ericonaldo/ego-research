@@ -1,6 +1,6 @@
 #!/bin/bash
 # Setup script for Project Aria tools
-# Usage: bash setup.sh
+# Usage: bash aria/scripts/setup.sh
 
 set -e
 
@@ -27,5 +27,5 @@ echo "Activate with: source $VENV_DIR/bin/activate"
 echo ""
 echo "Next steps:"
 echo "1. Go to https://www.projectaria.com/datasets/ and get a CDN file"
-echo "2. Run: aria_dataset_downloader -c <cdn_file.json> -o ./data/ -d 0"
-echo "3. Use process_vrs.py to extract data from VRS files"
+echo "2. Run: aria_dataset_downloader -c <cdn_file.json> -o ./aria/data/ -d 0"
+echo "3. Use aria/scripts/process_vrs.py to extract data from VRS files"

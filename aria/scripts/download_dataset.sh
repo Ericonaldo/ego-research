@@ -6,17 +6,17 @@
 #   2. Get CDN file from https://www.projectaria.com/datasets/
 #
 # Usage:
-#   bash download_dataset.sh <cdn_file.json> [output_dir] [data_types]
+#   bash aria/scripts/download_dataset.sh <cdn_file.json> [output_dir] [data_types]
 #
 # Examples:
 #   # Download VRS only
-#   bash download_dataset.sh adt_download_urls.json ./data/adt 0
+#   bash aria/scripts/download_dataset.sh adt_download_urls.json ./aria/data/adt 0
 #
 #   # Download VRS + MPS trajectory + eye gaze
-#   bash download_dataset.sh aea_download_urls.json ./data/aea "0 1 3"
+#   bash aria/scripts/download_dataset.sh aea_download_urls.json ./aria/data/aea "0 1 3"
 #
 #   # Download everything
-#   bash download_dataset.sh adt_download_urls.json ./data/adt "0 1 2 3 4 5 6 7 8 9"
+#   bash aria/scripts/download_dataset.sh adt_download_urls.json ./aria/data/adt "0 1 2 3 4 5 6 7 8 9"
 
 set -e
 

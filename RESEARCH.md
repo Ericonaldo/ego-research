@@ -1,552 +1,425 @@
-# Meta Project Aria - 开源数据集调研报告
+# Egocentric / First-Person Data 调研报告
 
-## 1. Project Aria 概述
+## 1. 调研目标
 
-Project Aria 是 Meta Reality Labs 的 AR 研究项目，基于轻量级 AR 眼镜采集第一人称（egocentric）多模态数据。
+这个仓库原本主要记录 `Project Aria` 数据集信息。现在将范围扩展为 **egocentric / first-person data 调研**，重点回答下面几个问题：
 
-### 传感器配置（Aria Gen 1）
+- 哪些第一人称数据集适合做 `action understanding / HOI / world model / robotics / SLAM / 3D perception`
+- 哪些数据集只是 `RGB video`，哪些已经覆盖 `depth / pose / mocap / IMU / language`
+- 哪些数据集访问门槛低，哪些需要人工审批、协议签署或重基础设施
+- `Xperience-10M` 这类新数据与 `Aria` / `Ego4D` 相比，到底新在哪里
+
+### 1.1 判断一个 egocentric 数据集的关键维度
+
+| 维度 | 关注点 |
+|------|--------|
+| 规模 | 小时数、序列数、参与者数、场景数、总存储 |
+| 模态 | RGB、音频、深度、轨迹、IMU、手/身体动作、语言标注 |
+| 结构化程度 | 只是视频 + 标签，还是带统一时间同步和几何/动作结构 |
+| Ground Truth | 手工标注、动捕、SLAM/MPS、合成、扫描 |
+| 适用任务 | 分类、定位、跟踪、重建、机器人学习、world modeling |
+| 使用门槛 | License、下载流程、存储、预处理难度 |
+
+---
+
+## 2. 数据集版图总览
+
+### 2.1 按“研究用途”看
+
+| 类别 | 代表数据集 | 典型用途 |
+|------|------------|----------|
+| 日常第一人称视频基准 | Ego4D, AEA | 长时活动理解、VLM 预训练、NLQ、预测 |
+| Ego-Exo 技能理解 | Ego-Exo4D | 技能学习、跨视角对应、熟练度评估 |
+| 3D / 几何 / 数字孪生 | ADT, ASE, DTC, HOT3D | 3D 检测、位姿、重建、sim-to-real |
+| 身体/手部动作与穿戴感知 | Nymeria, HOT3D, Xperience-10M | 手部姿态、全身动作、motion modeling |
+| 超大规模 embodied 数据 | Xperience-10M | world model、robot learning、multimodal pretraining |
+| 专项任务数据 | Reading in the Wild, AEO | 阅读识别、3D 物体检测评测 |
+
+### 2.2 按“数据结构成熟度”看
+
+| 数据集 | 主要特点 | 结构化程度 |
+|--------|----------|------------|
+| Ego4D | 大规模第一人称视频 + 多任务标注 | 中 |
+| Ego-Exo4D | ego + exo 同步技能数据 | 中到高 |
+| Project Aria 家族 | 统一设备、VRS/MPS、部分 GT / 动捕 / 合成 | 高 |
+| Xperience-10M | 六路视频 + 深度 + 手/身体 mocap + IMU + HDF5 | 很高 |
+
+---
+
+## 3. Project Aria 家族仍然是这个仓库的“工程主干”
+
+虽然仓库定位已经扩到 broader egocentric data，但 **Aria 家族** 仍然是当前最适合和仓库现有脚本直接联动的数据生态，因为本仓库的处理脚本围绕 `VRS` 和 `MPS`。
+
+### 3.1 Aria Gen 1 设备感知栈
 
 | 传感器 | 数量 | 规格 |
 |--------|------|------|
 | RGB 相机 | 1 | 1408x1408, 110 deg FOV, 1/10/15/30 FPS |
 | 单目 SLAM 相机 | 2 | 640x480, 150 deg FOV, 10/15/30 FPS |
-| 眼动追踪相机 (ET) | 2 | 320x240, 80 deg FOV, 10/30/60 FPS |
+| 眼动追踪相机 | 2 | 320x240, 80 deg FOV, 10/30/60 FPS |
 | IMU | 2 | 1kHz + 800Hz |
-| 磁力计 | 1 | |
-| 气压计 | 1 | |
+| 磁力计 | 1 | - |
+| 气压计 | 1 | - |
 | 麦克风 | 7 | 48kHz 空间音频 |
-| Wi-Fi Beacon | 1 | |
-| Bluetooth Beacon | 1 | |
+| Wi-Fi / Bluetooth Beacon | 各 1 | 近场定位相关 |
 
-### 核心链接
+### 3.2 Aria 数据格式
 
-- 官网: https://www.projectaria.com/
-- GitHub: https://github.com/facebookresearch/projectaria_tools
-- 文档: https://facebookresearch.github.io/projectaria_tools/
-- PyPI: https://pypi.org/project/projectaria-tools/
-- Dataset Explorer: https://explorer.projectaria.com/
+#### VRS
 
----
+Meta 的多流传感器容器格式，适合把相机、IMU、音频、标定信息放进一个统一文件。
 
-## 2. 数据格式
-
-### 2.1 VRS (Video Recording System)
-
-Meta 自定义的二进制多流传感器数据容器格式。
-
-- 将所有传感器流（相机、IMU、音频等）存储在单个 `.vrs` 文件中
-- 每个传感器流包含时间排序的记录（Configuration + Data records）
-- 支持按时间戳高效随机访问
-- 支持多种编解码器（JPEG、PNG、RAW 等）
-
-**Python 读取方式**：
 ```python
 from projectaria_tools.core import data_provider
 provider = data_provider.create_vrs_data_provider("recording.vrs")
-# 获取图像
-image_data = provider.get_image_data_by_index(stream_id, frame_index)
-# 获取 IMU
-imu_data = provider.get_imu_data_by_index(stream_id, sample_index)
 ```
 
-### 2.2 MPS (Machine Perception Services) 输出
+#### MPS
 
-MPS 是 Meta 提供的云端感知处理服务，对 VRS 原始数据进行处理后输出：
+Meta 的云端感知处理输出，提供轨迹、点云、眼动、在线标定、部分数据集中的手部结果。
 
-| 输出类型 | 格式 | 说明 |
-|----------|------|------|
-| Closed-loop trajectory | CSV | 全局优化后的 6DoF 设备位姿（~1kHz） |
-| Open-loop trajectory | CSV | 基于 VIO 的里程计位姿 |
-| Semi-dense point cloud | CSV.gz | 场景 3D 点云 |
-| Online calibration | JSONL | 实时更新的相机/IMU 标定 |
-| Eye gaze | CSV | 3D 注视方向向量 + 深度 |
-| Hand tracking | CSV | 手腕/手掌位姿 |
-
-**Python 读取方式**：
 ```python
-from projectaria_tools.core.mps import (
-    read_closed_loop_trajectory,
-    read_open_loop_trajectory,
-    read_eyegaze,
-    read_global_point_cloud,
-)
+from projectaria_tools.core.mps import read_closed_loop_trajectory
 trajectory = read_closed_loop_trajectory("closed_loop_trajectory.csv")
-point_cloud = read_global_point_cloud("global_points.csv.gz")
 ```
 
-### 2.3 Ground Truth 标注格式
+### 3.3 Aria 家族开放数据集速览
 
-| 格式 | 用途 |
-|------|------|
-| CSV | 2D/3D bounding box、轨迹、眼动 |
-| JSON | 实例元数据、场景描述、标定 |
-| PNG (16-bit) | 深度图（mm）、实例分割（ID） |
-| VRS | 深度图流、分割图流 |
-| PLY | 3D 点云 |
-| GLB | 3D 物体模型（带 PBR 材质） |
+| 数据集 | 规模 | 强项 | 更适合做什么 |
+|--------|------|------|--------------|
+| ADT | 236 sequences, ~3.5 TB | 高质量 GT + 合成渲染 + 物体/人体/深度/分割 | 3D 检测、位姿、重建、sim-to-real |
+| AEA | 143 sequences, 7.3-7.5h, ~353 GB | 日常活动、多用户共享坐标、语音转写 | 长时活动理解、神经重建、定位建图 |
+| ASE | 100K 场景, ~23 TB | 大规模合成 3D 场景 | 预训练、sim-to-real |
+| HOT3D | 833+ min, 3.7M+ images | 双设备、多视角手-物体 GT | 6DoF 物体位姿、手-物体联合追踪 |
+| Nymeria | 1,200 sequences, 300h | 全身运动、腕部设备、语言描述 | 身体追踪、动作建模、运动生成 |
+| DTC | 2,000 物体模型 + 305 sequences | 高保真数字孪生物体 | NVS、逆渲染、物体重建 |
+| AEO | 25 sequences, 45 min | 小而精的 3D OBB 基准 | 第一人称 3D 物体检测评测 |
+| Reading in the Wild | 1,716 sequences, 100h | 阅读识别 + 60Hz 眼动 | 阅读检测、gaze-aware AI |
+
+### 3.4 逐个数据集的研究定位
+
+#### ADT
+
+- 最强项是 `高质量 ground truth`
+- 既有真实传感器数据，也有对齐的 photorealistic synthetic render
+- 适合做：
+  - 3D 物体检测 / 分割
+  - 6DoF 物体位姿估计
+  - 眼动与场景理解联合建模
+  - sim-to-real 迁移
+
+#### AEA
+
+- 更接近日常生活而不是实验室受控场景
+- 关键价值是 `共享全局坐标系 + 语音转文字 + 长时第一人称轨迹`
+- 适合做：
+  - activity recognition / action forecasting
+  - neural scene reconstruction
+  - audio-visual scene understanding
+  - first-person localization / mapping
+
+#### ASE
+
+- 本质上是 Aria 生态里的大规模合成训练底座
+- 如果你需要万级场景预训练，ASE 比真实数据更可扩展
+- 代价是 domain gap 仍需要真实集验证
+
+#### HOT3D
+
+- 非常适合 `hand-object interaction`
+- 和一般第一人称视频数据集不同，它不是为了泛动作识别，而是为了 **精确的 3D 手-物交互**
+- 对 6DoF pose、BOP 风格评测尤其有价值
+
+#### Nymeria
+
+- 更偏向 `body motion + wearable sensing`
+- Aria 只是其中一个视角，真正的核心是 `XSens 全身动捕 + wrist miniAria + layered language`
+- 如果你想做第一人称身体追踪、语言到动作、穿戴感知融合，它比普通 egocentric video 数据更对口
+
+#### DTC / AEO / Reading
+
+- `DTC`: 适合物体数字孪生、NVS、逆渲染
+- `AEO`: 适合小规模但高质量的 3D object detection 评测
+- `Reading in the Wild`: 适合眼动 + 文本感知 + assistive AI
 
 ---
 
-## 3. 各数据集详细介绍
+## 4. 非 Aria 的关键 egocentric 数据集
 
----
+### 4.1 Ego4D
 
-### 3.1 Aria Digital Twin (ADT)
+**官网**: https://ego4d-data.org/
+**文档**: https://ego4d-data.org/docs/
+**官方描述**: **3,670 小时**第一人称视频、**923** 名 camera wearers、74 个地点、9 个国家
 
-**论文**: Pan et al., ICCV 2023. [arXiv:2306.06362](https://arxiv.org/abs/2306.06362)
-**下载**: https://www.projectaria.com/datasets/adt/
-**HuggingFace**: https://huggingface.co/datasets/projectaria/aria-digital-twin
+#### 研究定位
 
-#### 概述
-在真实室内环境中（公寓 + 办公室），使用动作捕捉系统生成高精度 ground truth 的第一人称数据集。同时提供真实传感器数据和对应的光照逼真合成渲染。
+Ego4D 仍然是最重要的通用第一人称视频基准之一。它最大的价值不是几何精度，而是：
 
-#### 规模
-- 236 个 sequences（单人 + 双人活动）
-- 公寓场景: 284 sequences, 281 个唯一物体（324 实例）
-- 办公室场景: 52 sequences, 15 个唯一物体（20 实例）
-- 74 个动态物体实例跨场景共享
-- 总大小: **~3.5 TB**（不含 MPS）
+- 长时、真实、全球分布的日常活动覆盖
+- 多 benchmark 生态已经成熟
+- 对 VLM / video-language / episodic memory / NLQ / forecasting 非常友好
 
-#### 活动类型
-房间装饰、备餐、办公、物体检查、房间清洁、聚会、餐桌清理
+#### 更适合做什么
 
-#### 每个 Sequence 包含的文件
+- 视频预训练
+- natural language query
+- episodic memory / object memory
+- hand-object interaction
+- social / audio-visual tasks
 
-```
-<sequence>/
-  video.vrs                    # 原始传感器数据（SLAM+RGB 相机、IMU）
-  synthetic_video.vrs          # 光照逼真合成渲染
-  metadata.json                # 序列元数据
-  aria_trajectory.csv          # 6DoF 设备轨迹
-  2d_bounding_box.csv          # RGB/SLAM 相机的 2D 边界框
-  3d_bounding_box.csv          # 3D 轴对齐边界框
-  scene_objects.csv            # 物体 6DoF 位姿随时间变化
-  eyegaze.csv                  # 眼动向量 + 深度
-  instances.json               # 物体/骨骼实例元数据
-  depth_images.vrs             # 3 个流的逐像素深度图（mm）
-  segmentations.vrs            # 3 个流的逐像素实例分割
-  Skeleton_*.json              # 人体骨骼数据
-  MPS/
-    eye_gaze/                  # MPS 眼动输出
-    slam/                      # MPS SLAM 输出（轨迹、点云、标定）
-```
+#### 不足
 
-#### Ground Truth（动作捕捉系统生成，非 SLAM 估计）
-- 连续 6DoF 设备位姿
-- 6DoF 物体位姿随时间变化
-- 3D 眼动向量
-- 3D 人体骨骼姿态（关节坐标 + marker 位置）
-- 逐像素实例分割
-- 逐像素深度图
-- 2D/3D 边界框 + 可见度
-- 高质量 `.glb` 3D 物体模型
-- 光照逼真合成渲染
+- 相比 Aria family 或 Xperience-10M，几何与动作结构没那么“重”
+- 如果你的目标是 `robotics / full-body motion / dense 3D state`，Ego4D 本身不够
 
-#### 研究用途
-- 3D 物体检测 / 分割
-- 6DoF 物体位姿估计与追踪
-- 场景重建 / 深度估计
-- 眼动预测
-- 人体姿态估计
-- Sim-to-real 迁移（利用合成渲染）
+### 4.2 Ego-Exo4D
 
----
-
-### 3.2 Aria Everyday Activities (AEA)
-
-**论文**: Lv et al., arXiv 2024. [arXiv:2402.13349](https://arxiv.org/abs/2402.13349)
-**下载**: https://www.projectaria.com/datasets/aea/
-**License**: CC BY 4.0（相对宽松）
-
-#### 概述
-多人在 5 个不同地理位置的室内环境中进行日常活动的第一人称多模态录制。部分 sequences 包含 2 人同时佩戴 Aria 在同一空间中活动，共享全局坐标系。
-
-#### 规模
-- 143 个 sequences（53 个为双人同时录制）
-- 5 个物理位置，共享坐标系
-- 100 万+ 图像
-- 7.3-7.5 小时累计录制
-- 总大小: **~353 GB**
-
-#### 每个 Sequence 包含的文件
-
-```
-<sequence>/
-  recording.vrs                # 原始传感器数据
-  metadata.json
-  speech.csv                   # 时间对齐的语音转文字
-  MPS/
-    eye_gaze/general_eye_gaze.csv
-    slam/
-      closed_loop_trajectory.csv
-      open_loop_trajectory.csv
-      online_calibration.csv
-      semidense_points.csv.gz
-      semidense_observations.csv.gz
-      summary.json
-```
-
-#### 标注
-- 全局对齐的 6DoF 高频轨迹
-- 半稠密场景点云
-- 逐帧 3D 眼动向量
-- **时间对齐的语音转文字**（稀有标注类型）
-- 在线相机/IMU 标定
-- 多用户数据使用共享全局坐标系
-
-#### 研究用途
-- 神经场景重建
-- 分割提示（Prompted Segmentation）
-- 持续第一人称视觉
-- 活动识别 / 动作预测
-- 音视频分析
-- 相机定位与建图
-
----
-
-### 3.3 Aria Synthetic Environments (ASE)
-
-**文档**: https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_synthetic_environments_dataset
-**下载**: https://www.projectaria.com/datasets/ase/
-
-#### 概述
-大规模程序化生成的合成室内场景数据集。每个场景由多个房间组成（最多 5 个曼哈顿对齐房间），使用 ~8,000 个不同 3D 物体填充。设备轨迹模拟真实行走路径，传感器模拟复现 Aria 眼镜的相机和镜头特性。
-
-#### 规模
-- **100,000** 个独特多房间室内场景
-- 5,800 万+ 图像
-- ~8,000 个不同 3D 物体
-- 67 天的模拟行走轨迹 / ~7,800 km
-- 总大小: **~23 TB**
-
-#### 每个场景包含的文件
-
-```
-<sceneID>/
-  rgb/                         # 合成 RGB 图像 (JPEG, 10 FPS)
-    vignette0000000.jpg
-    ...
-  depth/                       # 16-bit PNG 深度图（mm，沿射线方向）
-  instances/                   # 16-bit PNG 实例分割（像素值=物体ID）
-  ase_scene_language.txt       # ASE 场景语言描述（CAD-like）
-  trajectory.txt               # 6DoF GT 相机位姿 (10 FPS)
-  semidense_points.csv.gz      # 半稠密点云
-  semidense_observations.csv.gz
-  object_instances_to_classes.json  # 实例ID->类名映射
-```
-
-#### 独特特性
-- **ASE Scene Language**: 一种类 CAD 语言，描述建筑元素（门、窗、柱子）的类型、位置和尺寸
-- 适合大规模预训练
-- 与 ATEK 框架集成，支持端到端深度学习训练
-- IMU 噪声模型反映真实 Aria 硬件特性
-
-#### 研究用途
-- 第一人称物体检测/追踪
-- 场景重建
-- 平面图估计
-- 大规模预训练（万级场景）
-- Sim-to-real 基础训练
-
----
-
-### 3.4 Ego-Exo4D
-
-**论文**: Grauman et al., arXiv 2023. [arXiv:2311.18259](https://arxiv.org/abs/2311.18259)
 **官网**: https://ego-exo4d-data.org/
-**下载**: 需通过 Ego-Exo4D 官网单独申请
+**论文**: https://arxiv.org/abs/2311.18259
+**更新说明**: https://discuss.ego4d-data.org/t/ego-exo4d-v2-full-ego-exo4d-release/552
 
 #### 概述
-同时从第一人称（Aria 眼镜）和第三人称（4-5 台固定 GoPro）视角捕捉专业技能活动。覆盖 8 个技能领域，在全球 13 个城市采集。由 Meta FAIR + 15 所大学合作完成。
 
-#### 规模
-- **1,286.3 小时**总视频（221.26 小时 ego 视角）
-- 5,035 个 takes
-- 740 名佩戴者 / 800+ 参与者
-- 123 个场景，13 个城市
+由 Aria 眼镜和多台固定 exo 相机共同记录专业技能活动。官方公开信息显示完整发布包含：
 
-#### 活动分布
+- **1,286.30 小时**总视频
+- **5,035** takes
+- **221.26 小时** ego 视频
+- 8 个技能领域，13 个城市
 
-| 领域 | Takes | 参与者 | 小时 |
-|------|-------|--------|------|
-| 烹饪 | 678 | 173 | 564 |
-| 攀岩 | 1,401 | 98 | 94 |
-| 篮球 | 910 | 113 | 78 |
-| 舞蹈 | 728 | 93 | 107 |
-| 音乐 | 276 | 59 | 180 |
-| 健身 | 397 | 122 | 115 |
-| 足球 | 282 | 78 | 67 |
-| 自行车维修 | 363 | 32 | 82 |
+#### 它和 Ego4D 的差异
 
-#### 标注类型
-- 3D 身体和手部姿态
-- 物体分割 mask
-- **关键步骤标注**（Keystep annotations）
-- 步骤间的程序依赖关系
-- **熟练度评分**
-- 第一人称叙述（佩戴者自述）
-- 第三人称播报描述
-- **专家评论**（教练/老师点评技能表现）—— 新颖标注类型
-- 相机位姿 + 3D 点云
+| 维度 | Ego4D | Ego-Exo4D |
+|------|-------|------------|
+| 主问题 | 日常第一人称理解 | 技能理解与跨视角对应 |
+| 视角 | 主要是 ego | 同步 ego + exo |
+| 亮点标注 | narration, NLQ, memory | keystep, proficiency, expert commentary |
+| 典型任务 | 预训练、检索、预测 | 技能评估、跨视角迁移、姿态 |
 
-#### 研究用途
-- 关键步骤识别
-- 熟练度评估
-- 跨视角转换（ego-to-exo）
-- 3D 手/身体姿态估计
-- 精细活动理解 / 技能评估
-- 多模态学习
+#### 更适合做什么
+
+- fine-grained skill understanding
+- proficiency assessment
+- ego-exo correspondence
+- 教学演示与程序化步骤学习
 
 ---
 
-### 3.5 HOT3D
+## 5. Xperience-10M 重点调研
 
-**论文**: Hampali et al., CVPR 2025. [arXiv:2411.19167](https://arxiv.org/abs/2411.19167)
-**另见**: [arXiv:2406.09598](https://arxiv.org/abs/2406.09598)
-**下载**: https://www.projectaria.com/datasets/hot3D/ + GitHub 专用下载器
+### 5.1 发布状态与来源
 
-#### 概述
-第一人称 3D 手-物体追踪基准数据集。由两种头戴设备同时录制——Project Aria（AR 眼镜原型）和 Quest 3（VR 头显）。19 名参与者与 33 个刚性物体交互，GT 由专业光学动捕系统生成。
+`Xperience-10M` 于 **2026-03-16** 由 Ropedia 发布。当前最重要的公开来源有 3 个：
 
-#### 规模
-- **833+ 分钟**多视角图像流
-- 150 万多视角帧（370 万+ 单独图像）
-- 30 FPS
-- 19 名受试者，33 个物体
+- Release blog: https://ropedia.com/blog/20260316_xperience_10m
+- Dataset card: https://huggingface.co/datasets/ropedia-ai/xperience-10m
+- Loader / 可视化工具: https://github.com/Ropedia/HOMIE-toolkit
 
-#### 数据格式
-- 同步多视角 egocentric 视频流
-- 手部标注: **UmeTrack + MANO** 两种格式
-- 高保真 3D 物体模型（PBR 材质，内部扫描仪生成）
-- 2D 边界框
-- Eye Gaze MPS 数据（仅 Aria）
-- 半稠密点云（仅 Aria）
+另外有一个公开样本：
 
-#### 独特特性
-- **双设备采集**（Aria + Quest 3），可跨设备基准测试
-- 专业光学动捕系统 GT（非估计）
-- 公开挑战赛: ECCV 2024 BOP Challenge + 手部追踪挑战赛
+- Sample: https://huggingface.co/datasets/ropedia-ai/xperience-10m-sample
 
-#### 研究用途
-- 6DoF 物体位姿估计（model-based / model-free）
-- 2D 物体检测
-- 手部姿态和形状估计
-- 联合手-物体追踪
-- 注视引导的交互预测
+### 5.2 为什么它值得单独加入这个仓库
 
----
+和大部分 egocentric dataset 不同，Xperience-10M 不是“视频数据集 + 标签”的思路，而是把 **human experience** 当成结构化 4D 信号来组织。
 
-### 3.6 Nymeria
+它强调的不是单一 benchmark，而是：
 
-**论文**: Ma et al., ECCV 2024. [arXiv:2406.09905](https://arxiv.org/abs/2406.09905)
-**下载**: https://www.projectaria.com/datasets/nymeria/
-**License**: CC BY-NC 4.0
+- 视觉
+- 几何
+- 轨迹
+- 手部动作
+- 全身动作
+- IMU
+- 分层语言描述
 
-#### 概述
-**世界最大的第一人称人体运动数据集**。参与者同时佩戴：XSens MVN Link 惯性动捕服（17 个惯性传感器，240Hz 全身 GT）、Aria 眼镜、两个 miniAria 腕带。另有观察者佩戴 Aria 提供第三人称视角。所有设备亚毫秒时间同步。
+这些模态在同一 episode 中是时间同步、统一封装的。
 
-#### 规模
-- **300 小时**日常活动
-- 3,600 小时视频数据（所有设备合计）
-- 1,200 个 sequences
-- 264 名参与者，50 个室内外场景
-- 20 种活动场景
-- 2.6 亿+ 姿态
-- 400 km 行走轨迹，1,053 km 手腕运动
+### 5.3 官方公开的关键规模
 
-#### 语言标注（230 小时覆盖）
+根据 Hugging Face dataset card 与 release blog，截至 **2026-04-15** 可确认的核心指标包括：
 
-| 标注类型 | 小时 | 句子数 | 词数 |
-|----------|------|--------|------|
-| 运动叙述 (Narration) | 39 | 117.2K | 2.72M |
-| 活动摘要 (Summary) | 196 | 22.6K | 0.45M |
-| 原子动作 (Atomic Action) | 207 | 170.6K | 5.47M |
-| **合计** | 230 | **310.5K** | **8.64M** |
+| 指标 | 数值 |
+|------|------|
+| Experiences / interactions | 10M |
+| Video with audio | 10,000 小时 |
+| RGB frames | 2.88B |
+| Depth frames | 720M |
+| Camera poses | 576M |
+| Mocap frames | 576M |
+| IMU frames | 7.2B |
+| Caption sentences | 16M |
+| Caption words | 200M |
+| Vocabulary | 6K |
+| Objects | 350K |
+| Total trajectory length | 39,000 km |
+| Total storage | ~1 PB |
 
-词汇量: 6,545 个术语
+Release blog 还给出了更偏“数据分布”侧的信息：
 
-#### 数据内容
-- Aria 眼镜: RGB + 2 SLAM + 2 ET + 2 IMU + 磁力计 + 气压计 + 音频
-- miniAria 腕带: 类似传感器，腕部视角
-- XSens 动捕: 240Hz 全身运动学，重定向到参数化人体模型（Meta Momentum）
-- MPS: 6DoF 轨迹、半稠密点云、带深度的眼动
+- 约 **2,970** 人
+- **1,756** 个 locations
+- **1,301** 个 activity categories
 
-#### 独特特性
-- miniAria 腕带（原型未来可穿戴设备形态）
-- 分层粗到细语言标注
-- 观察者视角（第三人称 Aria 录制）
-- EgoBlur 隐私保护（人脸和车牌模糊）
+### 5.4 数据组织方式
 
-#### 研究用途
-- 第一人称身体追踪
-- 运动合成/生成
-- 动作识别/预测
-- 语言条件化运动生成
-- 可穿戴计算研究
+Xperience-10M 的一个典型 episode 公开结构如下：
 
----
+```text
+episode/
+  fisheye_cam0.mp4
+  fisheye_cam1.mp4
+  fisheye_cam2.mp4
+  fisheye_cam3.mp4
+  stereo_left.mp4
+  stereo_right.mp4
+  annotation.hdf5
+```
 
-### 3.7 Digital Twin Catalog (DTC)
+`annotation.hdf5` 里统一放：
 
-**论文**: Dong et al., CVPR 2025 (Highlight). [arXiv:2504.08541](https://arxiv.org/abs/2504.08541)
-**下载**: https://www.projectaria.com/datasets/dtc/
-**GitHub**: https://github.com/facebookresearch/DigitalTwinCatalog
+- calibration
+- slam trajectory / point cloud
+- depth
+- hand mocap
+- full-body mocap
+- imu
+- video timestamps
+- metadata
+- caption
 
-#### 概述
-2,000 个高保真 3D 物体数字孪生，亚毫米级几何精度 + 光照逼真 PBR 材质。同时提供子集物体的多条件图像序列（DSLR 相机 + Aria 眼镜），带对齐的 GT 位姿和轨迹。首个全面的 3D 数字孪生创建真实世界评估基准。
+这个设计意味着它在工程上更像一个 **结构化 embodied dataset**，而不是纯视频语料。
 
-#### 规模
-- **2,000** 个扫描 3D 物体模型
-- 200 个 Aria sequences（100 主动/360 环绕 + 100 被动/随意走过）
-- 105 个 DSLR sequences（2 种光照条件）
-- 2 个光照环境图/DSLR sequence
+### 5.5 支持的任务类型
 
-#### 数据格式
-- `.glb` 3D 模型 + PBR 材质
-- Aria VRS（主动/被动轨迹）
-- DSLR 图像序列（3 台相机，机械臂，3 个拍摄方向）
-- 设备轨迹 + 对齐物体位姿
-- 光照环境图
+官方 dataset card 明确列出的任务包括：
 
-#### 研究用途
-- 新视角合成 (NVS)
-- 3D 形状重建
-- 可重光照外观重建
-- 逆渲染
-- 数字孪生生成
+- egocentric action recognition
+- task / subtask prediction
+- action captioning
+- temporal action localization
+- human-object interaction understanding
+- audio-visual learning
+- visual-language pretraining
+- stereo / monocular depth estimation
+- visual odometry / SLAM
+- hand pose estimation
+- body motion estimation
+- imitation learning
+- policy learning for robotics
+- world model training
 
----
+### 5.6 和现有主流数据集相比，它强在哪里
 
-### 3.8 Aria Everyday Objects (AEO)
+| 对比对象 | Xperience-10M 的优势 | 仍然需要注意的问题 |
+|----------|----------------------|--------------------|
+| Ego4D | 多出深度、SLAM、手/身体 mocap、IMU、统一 HDF5 | Ego4D benchmark 生态更成熟 |
+| Ego-Exo4D | 更大规模、更强 embodied state 结构 | Ego-Exo4D 的技能与专家点评标注更鲜明 |
+| Aria AEA | 模态更完整、规模大很多 | AEA 更容易直接和 Aria 工具链结合 |
+| Nymeria | 更大规模、任务覆盖更广 | Nymeria 的 wearable body tracking 标注链更成熟 |
+| HOT3D | 覆盖更广，不只盯手物交互 | HOT3D 在精确手-物 GT 和 benchmark 上更专业 |
 
-**论文**: Straub et al., "EFM3D," ECCV 2024. [arXiv:2406.10224](https://arxiv.org/abs/2406.10224)
-**下载**: https://www.projectaria.com/datasets/aeo/
+### 5.7 访问方式与现实门槛
 
-#### 概述
-小型但高质量的第一人称 3D 物体检测数据集。由非计算机视觉专家在美国多地采集，确保真实、非脚本的运动模式。
+Xperience-10M 当前不是“一键公开下载”的低门槛数据集。
 
-#### 规模
-- 25 个 sequences（~45 分钟）
-- 1,037 个标注 3D 有向边界框 (OBB)
-- **17 个物体类别**: Bed, Chair, Couch, Door, Floor, Lamp, Mirror, Plant, Refrigerator, Screen, Sink, Storage, Table, Wall, WallArt, WasherDryer, Window
+公开资料显示它的访问流程包括：
 
-#### 数据格式
-- Aria RGB (10Hz) + 2x SLAM (10Hz) + 2x IMU
-- 完整传感器标定
-- MPS: 半稠密点云 + 6DoF 轨迹
+- Hugging Face gated access
+- 人工审核
+- 非商业用途限制
+- 可能需要额外签署 DocuSign 协议
+- 部分数据通过 controlled distribution 提供
 
-#### 研究用途
-- 第一人称 3D 物体检测
-- Sim-to-real 验证
-- 第一人称基础模型评估
+这意味着：
 
----
+- 它非常适合做方向判断和技术规划
+- 但不适合假设“今天申请、今天全量训练”
+- 更现实的路径通常是先用 sample 和 HOMIE-toolkit 验证数据格式，再决定是否推进正式申请
 
-### 3.9 Reading in the Wild
+### 5.8 研究判断
 
-**论文**: Yang et al., NeurIPS 2025. [arXiv:2505.24848](https://arxiv.org/abs/2505.24848)
-**下载**: https://www.projectaria.com/datasets/reading-in-the-wild/
-**Dataset Explorer**: https://explorer.projectaria.com/ritw
-**License**: CC BY-NC 4.0 + Apache 2.0
+截至 **2026-04-15**，Xperience-10M 更像是一个 **基础设施级数据发布**，而不是已经形成成熟 leaderboard 生态的 benchmark。
 
-#### 概述
-首个大规模可穿戴设备阅读识别多模态数据集。使用 Aria Gen 1 采集 100 小时的阅读/非阅读视频，涵盖多种真实场景。
+我的判断是：
 
-#### 规模
-- **100 小时**视频
-- 1,716 个 sequences
-- 111 名参与者
-- 150+ 种阅读材料
-- 19 个高层场景类型
-
-#### 传感器数据
-| 传感器 | 规格 |
-|--------|------|
-| RGB 相机 | 110 deg FOV, 30 Hz |
-| 眼动追踪相机 | 80 deg FOV, **60 Hz**（首个 60Hz ET 数据集） |
-| SLAM/手部相机 | 150 deg FOV, 30 Hz |
-| IMU | 1kHz + 800Hz |
-| 麦克风 | 7 通道, 48kHz |
-
-#### 标注
-- 阅读活动时间戳（开始/结束）
-- 阅读材料分类
-- 阅读模式: 专注阅读、浏览、扫描、朗读、多任务
-- 3D 眼动估计 + 6DoF 轨迹
-
-#### 独特特性
-- 定义了 **"阅读识别"** 这一新研究任务
-- 包含 hard negatives（文本可见但未被阅读）
-- 多语言支持（Columbus 子集，4 种语言）
-- 首个 60Hz 眼动追踪数据集
-
-#### 研究用途
-- 可穿戴设备阅读检测/识别
-- 眼动分析
-- 多模态活动识别
-- 上下文 AI 助手
-- 无障碍应用
+- 如果你的目标是 `world model / robotics / multimodal embodied pretraining`，它非常值得重点关注
+- 如果你现在就要做 `公开 benchmark 对比`，Aria family、Ego4D、HOT3D 依然更成熟
+- 如果你需要的是 `全身动作 + 手 + 几何 + IMU + 长时语言` 的同构数据结构，Xperience-10M 是当前公开信息里最激进的候选之一
 
 ---
 
-## 4. 数据集对比总结
+## 6. 横向对比：做不同任务该优先看谁
 
-| 数据集 | 规模 | 大小 | 核心模态 | GT 方法 | 发表 |
-|--------|------|------|----------|---------|------|
-| **ADT** | 236 seq | ~3.5 TB | 真实+合成视频 | 动捕系统 | ICCV 2023 |
-| **AEA** | 143 seq, 7.3h | ~353 GB | 多模态 egocentric | MPS + 语音转写 | arXiv 2024 |
-| **ASE** | 100K 场景, 58M+ img | ~23 TB | 合成 RGB/深度/分割 | 程序化生成 | -- |
-| **Ego-Exo4D** | 5,035 takes, 1,286h | Very Large | Ego+Exo 视频 | 多视角 + 标注 | arXiv 2023 |
-| **HOT3D** | 833 min, 3.7M+ img | Medium | 多视角 egocentric | 光学动捕 | CVPR 2025 |
-| **Nymeria** | 1,200 seq, 300h | Large | 全身运动 + egocentric | XSens 惯性动捕 240Hz | ECCV 2024 |
-| **DTC** | 2,000 模型 + 305 seq | Medium | 3D 扫描 + 采集 | 亚毫米 3D 扫描 | CVPR 2025 |
-| **AEO** | 25 seq, 45 min | Small | Egocentric 视频 | 手工 3D 标注 | ECCV 2024 |
-| **Reading** | 1,716 seq, 100h | Medium | 视频 + 60Hz 眼动 | 手工标注 | NeurIPS 2025 |
+### 6.1 数据集对比表
 
----
+| 数据集 | 规模 / 成熟度 | 核心模态 | 典型 GT / 标注 | 推荐任务 |
+|--------|----------------|----------|----------------|----------|
+| ADT | 中规模，高精度 | RGB, SLAM, eye gaze, depth, segmentation | 动捕 + 合成 + 3D GT | 3D 感知、位姿、重建 |
+| AEA | 中规模，真实日常 | RGB, SLAM, eye gaze, audio, transcript | MPS + 语音转写 | activity, AV, localization |
+| ASE | 超大规模合成 | RGB, depth, instances, trajectory | 程序化 GT | 大规模预训练 |
+| Ego4D | 超大规模视频 | video, audio, narration, benchmark labels | 人工标注为主 | VLM、检索、预测 |
+| Ego-Exo4D | 大规模技能数据 | ego + exo video, pose, commentary | 多视角标注 | 技能理解、跨视角 |
+| HOT3D | 专项高精度 | multi-view ego, hand/object | 光学动捕 | 手-物体追踪、6DoF pose |
+| Nymeria | 大规模 wearable motion | ego video, wrist sensing, body motion, language | XSens + 分层语言 | 身体追踪、动作生成 |
+| Xperience-10M | 超大规模 embodied data | 6 video streams, depth, pose, mocap, IMU, captions | 结构化多模态同步 | world model、robotics、pretraining |
+| Reading in the Wild | 专项中规模 | video, 60Hz gaze | 阅读行为标注 | 阅读识别、assistive AI |
 
-## 5. 按研究方向推荐
+### 6.2 按研究方向推荐
 
-| 研究方向 | 推荐数据集 |
+| 研究方向 | 优先数据集 |
 |----------|-----------|
-| 3D 物体检测/分割 | ADT, AEO |
-| 6DoF 位姿估计 | ADT, HOT3D, DTC |
-| 场景重建/深度估计 | ADT, AEA, ASE |
-| SLAM/定位/建图 | AEA, ASE |
-| 人体姿态估计 | ADT, Nymeria, Ego-Exo4D |
-| 手部追踪 | HOT3D |
-| 眼动分析 | AEA, Reading in the Wild |
-| 活动识别 | AEA, Ego-Exo4D |
-| Sim-to-real | ADT (合成), ASE |
-| 运动生成/预测 | Nymeria |
-| 数字孪生/逆渲染 | DTC |
-| 多模态学习 | Ego-Exo4D, Nymeria |
-| 阅读识别 | Reading in the Wild |
-| 大规模预训练 | ASE (100K scenes) |
+| 通用第一人称视频理解 / VLM | Ego4D, AEA, Xperience-10M |
+| 世界模型 / Embodied pretraining | Xperience-10M, ASE, Ego4D |
+| 机器人模仿学习 / policy learning | Xperience-10M, Aria 相关机器人工作流, Ego-Exo4D |
+| 3D 场景理解 / 重建 | ADT, AEA, ASE, Xperience-10M |
+| 6DoF 物体位姿 / 手物交互 | HOT3D, ADT, DTC |
+| 全身动作 / motion modeling | Nymeria, Xperience-10M |
+| Gaze / 阅读 / 可穿戴 AI | Reading in the Wild, AEA |
+| 跨视角技能学习 | Ego-Exo4D |
 
 ---
 
-## 6. 关键文档链接
+## 7. 对这个仓库的重新定位
 
-- [Open Datasets Overview](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets)
-- [Dataset Download Guide](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/dataset_download)
-- [VRS Data Provider](https://facebookresearch.github.io/projectaria_tools/docs/data_utilities/core_code_snippets/data_provider)
-- [ADT Getting Started](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_digital_twin_dataset/adt_getting_started)
-- [ADT Data Format](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_digital_twin_dataset/data_format)
-- [AEA Getting Started](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_everyday_activities_dataset/aea_getting_started)
-- [ASE Getting Started](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_synthetic_environments_dataset/ase_getting_started)
-- [ASE Data Format](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_synthetic_environments_dataset/ase_data_format)
-- [HOT3D Docs](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/hot3d)
-- [Nymeria Docs](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/nymeria)
-- [DTC Docs](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/digital_twin_catalog)
-- [AEO Docs](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_everyday_objects)
-- [Python Installation](https://facebookresearch.github.io/projectaria_tools/docs/data_utilities/installation/installation_python)
+### 7.1 现在这个仓库适合做什么
+
+- 作为 **egocentric data landscape** 的内部知识库
+- 帮你快速判断：
+  - 该用 Aria family 还是 Ego4D
+  - 该优先 benchmark 还是优先 embodied pretraining
+  - `Xperience-10M` 值不值得投入申请和适配工程
+
+### 7.2 仍然保留的工程价值
+
+- `aria/scripts/process_vrs.py`
+- `aria/scripts/process_mps.py`
+- `aria/scripts/download_dataset.sh`
+
+现在还新增了：
+
+- `xperience/scripts/process_xperience.py`
+- `xperience/scripts/build_sample_subset.py`
+
+不过整体上，仓库现阶段最成熟的工程工具链仍然是 `Aria family`。
+
+### 7.3 下一步如果继续扩展
+
+建议优先做 3 件事：
+
+1. 增加 `Ego4D` 的样例解析脚本或访问脚本说明
+2. 为 `Xperience-10M Sample` 写一个最小可运行的解析笔记
+3. 增加一份 `task -> dataset -> access cost -> infra cost` 的决策表
 
 ---
 
-## 7. License
+## 8. 核心结论
 
-所有数据集均为 **非商业研究用途**。个别数据集有更宽松许可：
-- AEA: CC BY 4.0
-- Nymeria: CC BY-NC 4.0
-- Reading in the Wild: CC BY-NC 4.0 + Apache 2.0
+1. `Project Aria` 依然是这个仓库最可落地的数据生态，因为现有脚本、格式说明和样例都围绕它构建。
+2. `Ego4D / Ego-Exo4D` 代表的是更成熟的公开 benchmark 生态，适合做通用第一人称理解和技能学习。
+3. `Xperience-10M` 是这次改造里最值得补进来的新对象，因为它把 egocentric data 从“视频语料”推向了“结构化 embodied experience”。
+4. 如果目标是 `机器人 / world model / multimodal embodied foundation model`，Xperience-10M 的战略价值已经高于很多传统第一人称视频集。
+5. 如果目标是近期可复现、可下载、可对标的研究，Aria family、Ego4D、HOT3D 依然更现实。
+
+*最后更新：2026-04-15*

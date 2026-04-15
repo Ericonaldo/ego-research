@@ -1,0 +1,514 @@
+{
+  "calibration": {
+    "type": "group"
+  },
+  "calibration/cam0": {
+    "type": "group"
+  },
+  "calibration/cam0/D": {
+    "type": "dataset",
+    "shape": [
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam0/K": {
+    "type": "dataset",
+    "shape": [
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam0/T_c_b": {
+    "type": "dataset",
+    "shape": [
+      4,
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam0/camera_model": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "pinhole"
+  },
+  "calibration/cam0/distortion_model": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "equidistant"
+  },
+  "calibration/cam01": {
+    "type": "group"
+  },
+  "calibration/cam01/K": {
+    "type": "dataset",
+    "shape": [
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam01/T_c0_b": {
+    "type": "dataset",
+    "shape": [
+      4,
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam01/baseline": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "float64",
+    "value": 0.14530696269782056
+  },
+  "calibration/cam1": {
+    "type": "group"
+  },
+  "calibration/cam1/D": {
+    "type": "dataset",
+    "shape": [
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam1/K": {
+    "type": "dataset",
+    "shape": [
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam1/T_cn_cnm1": {
+    "type": "dataset",
+    "shape": [
+      4,
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam1/camera_model": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "pinhole"
+  },
+  "calibration/cam1/distortion_model": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "equidistant"
+  },
+  "calibration/cam2": {
+    "type": "group"
+  },
+  "calibration/cam2/D": {
+    "type": "dataset",
+    "shape": [
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam2/K": {
+    "type": "dataset",
+    "shape": [
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam2/T_cn_cnm1": {
+    "type": "dataset",
+    "shape": [
+      4,
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam2/camera_model": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "pinhole"
+  },
+  "calibration/cam2/distortion_model": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "equidistant"
+  },
+  "calibration/cam3": {
+    "type": "group"
+  },
+  "calibration/cam3/D": {
+    "type": "dataset",
+    "shape": [
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam3/K": {
+    "type": "dataset",
+    "shape": [
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam3/T_cn_cnm1": {
+    "type": "dataset",
+    "shape": [
+      4,
+      4
+    ],
+    "dtype": "float64"
+  },
+  "calibration/cam3/camera_model": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "pinhole"
+  },
+  "calibration/cam3/distortion_model": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "equidistant"
+  },
+  "caption": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "{\"config\": {\"total_frames\": 5822, \"total_tokens\": 181010, \"Main Task\": \"Making pour-over coffee\"}, \"segments\": [{\"segment_id\": 0, \"start_frame\": \"72857807732824\", \"end_frame\": \"72877756316292\", \"Sub Task\": \"Pick up and position kettle\", \"Current Action\": [{\"label\": \"Pick up kettle\", \"description\": \"The person reaches for and picks up the glass coffee kettle from the table.\", \"start_frame\": 72857807732824, \"end_frame\": 72863804786785}, {\"label\": \"Position kettle to pour\", \"description\": \"The person moves the kettle over the coffee equipment to begin the pouring process. The user holds the gooseneck kettle with their right hand, maneuvering it over the coffee dripper setup to prepare for pouring.\", \"start_frame\": 72865805406411, \"end_frame\": 72895806166842}], \"sampled_frames\": {\"Image 1\": 72857807732824, \"Image 2\": 72859805540867, \"Image 3\": 72861806966951, \"Image 4\": 72863804786785, \"Image 5\": 72865805406411, \"Image 6\": 72867806545037, \"Image 7\": 72869804786246, \"Image 8\": 72871804786081, \"Image 9\": 72873807112873, \"Image 10\": 72875807554333}, \"objects\": {\"72857807732824\": [\"kettle\", \"coffee dripper\", \"scale\", \"bottle\"], \"72863804786785\": [\"kettle\"], \"72875807554333\": [\"kettle\", \"coffee dripper\", \"scale\"]}, \"interaction\": {\"72859805540867\": \"Hand is moving towards the kettle.\", \"72863804786785\": \"Hand is grasping the handle of the kettle.\", \"72873807112873\": \"Hand is holding the kettle over the coffee dripper area.\"}, \"api_call_start\": \"2026-03-17T03:45:04.208544\", \"api_call_end\": \"2026-03-17T03:45:06.957816\", \"tokens_in\": 11849, \"tokens_out\": 379}, {\"segment_id\": 1, \"start_frame\": \"72877805630083\", \"end_frame\": \"72897754784551\", \"Sub Task\": \"Position kettle to pour\", \"Current Action\": [], \"sampled_frames\": {\"Image 1\": 72877805630083, \"Image 2\": 72879806166584, \"Image 3\": 72881804786502, \"Image 4\": 72883804786336, \"Image 5\": 72885804787921, \"Image 6\": 72887804785797, \"Image 7\": 72889804786173, \"Image 8\": 72891805764257, \"Image 9\": 72893804785424, \"Image 10\": 72895806166842}, \"objects\": {\"72877805630083\": [\"gooseneck kettle\", \"coffee dripper\", \"digital scale\", \"table\"], \"72883804786336\": [\"gooseneck kettle\", \"coffee dripper\", \"digital scale\"], \"72895806166842\": [\"gooseneck kettle\", \"coffee dripper\", \"digital scale\"]}, \"interaction\": {\"72877805630083\": \"The right hand is gripping the handle of the kettle, holding it above the coffee station.\", \"72883804786336\": \"The kettle is being angled and positioned precisely over the coffee dripper by the hand.\", \"72895806166842\": \"The user maintains a steady hold on the kettle, aligning the spout for the impending water pour.\"}, \"api_call_start\": \"2026-03-17T03:45:07.960332\", \"api_call_end\": \"2026-03-17T03:45:11.501140\", \"tokens_in\": 11896, \"tokens_out\": 355}, {\"segment_id\": 2, \"start_frame\": \"72897804785676\", \"end_frame\": \"72907756442973\", \"Sub Task\": \"Move kettle\", \"Current Action\": [{\"label\": \"Move kettle\", \"description\": \"The person moves the gooseneck kettle aside from the immediate work area on the table.\", \"start_frame\": 72897804785676, \"end_frame\": 72905804784472}], \"sampled_frames\": {\"Image 1\": 72897804785676, \"Image 2\": 72899804784761, \"Image 3\": 72901804785137, \"Image 4\": 72903807028554, \"Image 5\": 72905804784472}, \"objects\": {\"72897804785676\": [\"kettle\", \"dripper\", \"scale\", \"coffee filter\", \"table\"], \"72905804784472\": [\"kettle\", \"dripper\", \"scale\", \"coffee filter\", \"table\"]}, \"interaction\": {\"72897804785676\": \"hand moving the kettle across the table surface\", \"72905804784472\": \"hand placing the kettle down on the table\"}, \"api_call_start\": \"2026-03-17T03:45:12.503115\", \"api_call_end\": \"2026-03-17T03:45:15.182155\", \"tokens_in\": 6336, \"tokens_out\": 257}, {\"segment_id\": 3, \"start_frame\": \"72907804785931\", \"end_frame\": \"72927754784649\", \"Sub Task\": \"Prepare coffee equipment and scoop grounds\", \"Current Action\": [{\"label\": \"Hold coffee carafe\", \"description\": \"The user holds a glass coffee carafe containing brewed coffee while preparing to pour it.\", \"start_frame\": 72907804785931, \"end_frame\": 72917807015228}, {\"label\": \"Grasp coffee scoop\", \"description\": \"The user reaches for and grasps a small wooden measuring scoop with their right hand. The user holds a jar of coffee grounds and uses a wooden scoop to extract a portion of the grounds.\", \"start_frame\": 72919804784853, \"end_frame\": \"72935804786903\"}], \"sampled_frames\": {\"Image 1\": 72907804785931, \"Image 2\": 72909805208974, \"Image 3\": 72911804785683, \"Image 4\": 72913804785517, \"Image 5\": 72915804785602, \"Image 6\": 72917807015228, \"Image 7\": 72919804784853, \"Image 8\": 72921805083021, \"Image 9\": 72923806908689, \"Image 10\": 72925804784565}, \"objects\": {\"72907804785931\": [\"glass carafe\", \"coffee scale\", \"coffee dripper\", \"white mug\", \"bottle\"], \"72919804784853\": [\"glass carafe\", \"wooden scoop\"], \"72925804784565\": [\"glass carafe\", \"wooden scoop\"]}, \"interaction\": {\"72907804785931\": \"User's hands are holding the glass carafe.\", \"72921805083021\": \"User moves right hand towards the wooden scoop.\", \"72925804784565\": \"User picks up the wooden scoop with their right hand.\"}, \"api_call_start\": \"2026-03-17T03:45:17.850314\", \"api_call_end\": \"2026-03-17T03:45:21.828158\", \"tokens_in\": 11787, \"tokens_out\": 395}, {\"segment_id\": 4, \"start_frame\": \"72927804785149\", \"end_frame\": \"72947754784825\", \"Sub Task\": \"Transfer coffee grounds to dripper\", \"Current Action\": [{\"label\": \"Transfer coffee to dripper\", \"description\": \"The user moves the scoop filled with coffee grounds towards the paper-lined coffee dripper to begin filling it. The user picks up the lid and places it onto the cylindrical coffee container to close it.\", \"start_frame\": \"72937804785487\", \"end_frame\": 72955804786829}], \"sampled_frames\": {\"Image 1\": 72927804785149, \"Image 2\": 72929806843608, \"Image 3\": 72931804785276, \"Image 4\": 72933804786360, \"Image 5\": 72935804786903, \"Image 6\": 72937804785487, \"Image 7\": 72939804785946, \"Image 8\": 72941804785072, \"Image 9\": 72943804785948, \"Image 10\": 72945804784533}, \"objects\": {\"72927804785149\": [\"coffee jar\", \"coffee scoop\", \"dripper\"], \"72931804785276\": [\"coffee jar\", \"coffee scoop\"], \"72937804785487\": [\"coffee scoop\", \"dripper\"], \"72945804784533\": [\"coffee scoop\", \"dripper\"]}, \"interaction\": {\"72927804785149\": \"hand holding coffee jar and wooden scoop\", \"72931804785276\": \"scoop inside the coffee jar to collect grounds\", \"72937804785487\": \"scoop moving away from the jar toward the coffee dripper\", \"72945804784533\": \"scoop positioned over the coffee dripper\"}, \"api_call_start\": \"2026-03-17T03:45:22.831187\", \"api_call_end\": \"2026-03-17T03:45:26.695774\", \"tokens_in\": 11794, \"tokens_out\": 450}, {\"segment_id\": 5, \"start_frame\": \"72947804785867\", \"end_frame\": \"72957754785872\", \"Sub Task\": \"Secure coffee container\", \"Current Action\": [], \"sampled_frames\": {\"Image 1\": 72947804785867, \"Image 2\": 72949804786368, \"Image 3\": 72951806844535, \"Image 4\": 72953806615953, \"Image 5\": 72955804786829}, \"objects\": {\"72947804785867\": [\"coffee container\", \"lid\", \"coffee scoop\", \"dripper\", \"scale\"], \"72955804786829\": [\"closed coffee container\", \"dripper\", \"scale\"]}, \"interaction\": {\"72947804785867\": \"User holds the lid of the coffee container in the right hand while the left hand holds the container.\", \"72955804786829\": \"User pushes the lid down to seal the coffee container.\"}, \"api_call_start\": \"2026-03-17T03:45:27.697833\", \"api_call_end\": \"2026-03-17T03:45:30.889532\", \"tokens_in\": 6238, \"tokens_out\": 290}, {\"segment_id\": 6, \"start_frame\": \"72957804786497\", \"end_frame\": \"72977754785464\", \"Sub Task\": \"Handle gooseneck kettle\", \"Current Action\": [{\"label\": \"Hold gooseneck kettle\", \"description\": \"The person holds the gooseneck kettle, preparing to pour water into the coffee dripper. The user maintains a ready position with the gooseneck kettle, preparing to begin pouring over the coffee grounds.\", \"start_frame\": \"72957804786497\", \"end_frame\": 72995804785348}], \"sampled_frames\": {\"Image 1\": 72957804786497, \"Image 2\": 72959804937581, \"Image 3\": 72961806071457, \"Image 4\": 72963808092208, \"Image 5\": 72965804784542, \"Image 6\": 72967804785168, \"Image 7\": 72969805360002, \"Image 8\": 72971807560670, \"Image 9\": 72973806822421, \"Image 10\": 72975806764297}, \"objects\": {\"72957804786497\": [\"gooseneck kettle\", \"coffee dripper\", \"digital scale\", \"water bottle\", \"coffee mug\"], \"72975806764297\": [\"gooseneck kettle\", \"coffee dripper\", \"digital scale\", \"water bottle\", \"coffee mug\"]}, \"interaction\": {\"72957804786497\": \"The right hand is gripping the handle of the gooseneck kettle, while the left hand is resting near the scale.\", \"72975806764297\": \"The person continues to hold the kettle handle in a steady position before starting the pour.\"}, \"api_call_start\": \"2026-03-17T03:45:33.497514\", \"api_call_end\": \"2026-03-17T03:45:38.558280\", \"tokens_in\": 11790, \"tokens_out\": 299}, {\"segment_id\": 7, \"start_frame\": \"72977804786464\", \"end_frame\": \"72997754784932\", \"Sub Task\": \"Handle gooseneck kettle\", \"Current Action\": [], \"sampled_frames\": {\"Image 1\": 72977804786464, \"Image 2\": 72979807124882, \"Image 3\": 72981804786550, \"Image 4\": 72983805363759, \"Image 5\": 72985804784927, \"Image 6\": 72987804787386, \"Image 7\": 72989806318887, \"Image 8\": 72991805350888, \"Image 9\": 72993804786097, \"Image 10\": 72995804785348}, \"objects\": {\"72977804786464\": [\"gooseneck kettle\", \"coffee dripper\", \"scale\", \"mug\", \"water bottle\"], \"72995804785348\": [\"gooseneck kettle\", \"coffee dripper\", \"scale\", \"mug\", \"water bottle\"]}, \"interaction\": {\"72977804786464\": \"hands positioned near the gooseneck kettle, holding it in readiness\", \"72995804785348\": \"hands continue to hold the gooseneck kettle steady over the table workspace\"}, \"api_call_start\": \"2026-03-17T03:45:39.561297\", \"api_call_end\": \"2026-03-17T03:45:42.406227\", \"tokens_in\": 11791, \"tokens_out\": 286}, {\"segment_id\": 8, \"start_frame\": \"72997806959599\", \"end_frame\": \"73007754785812\", \"Sub Task\": \"Lift gooseneck kettle\", \"Current Action\": [{\"label\": \"Grasp gooseneck kettle\", \"description\": \"The user reaches for and grips the handle of the gooseneck kettle resting on the table.\", \"start_frame\": 72997806959599, \"end_frame\": 73001806615226}, {\"label\": \"Lift gooseneck kettle\", \"description\": \"The user lifts the kettle off the table surface to prepare for pouring. The user maintains their grip on the gooseneck kettle, preparing to pour water into the coffee dripper.\", \"start_frame\": 73003804785644, \"end_frame\": 73025807613779}], \"sampled_frames\": {\"Image 1\": 72997806959599, \"Image 2\": 72999804785308, \"Image 3\": 73001806615226, \"Image 4\": 73003804785644, \"Image 5\": 73005806914853}, \"objects\": {\"72997806959599\": [\"gooseneck kettle\", \"coffee dripper\", \"scale\", \"water bottle\", \"white cup\"], \"73005806914853\": [\"gooseneck kettle\", \"coffee dripper\", \"scale\"]}, \"interaction\": {\"73001806615226\": \"The user's right hand makes contact and grips the handle of the gooseneck kettle.\", \"73005806914853\": \"The user's right hand is actively holding and lifting the gooseneck kettle.\"}, \"api_call_start\": \"2026-03-17T03:45:43.408219\", \"api_call_end\": \"2026-03-17T03:45:46.638385\", \"tokens_in\": 6235, \"tokens_out\": 369}, {\"segment_id\": 9, \"start_frame\": \"73007804786395\", \"end_frame\": \"73027754786113\", \"Sub Task\": \"Handle gooseneck kettle\", \"Current Action\": [], \"sampled_frames\": {\"Image 1\": 73007804786395, \"Image 2\": 73009807916063, \"Image 3\": 73011807160772, \"Image 4\": 73013806004190, \"Image 5\": 73015804783899, \"Image 6\": 73017804785525, \"Image 7\": 73019804785110, \"Image 8\": 73021804786777, \"Image 9\": 73023804786820, \"Image 10\": 73025807613779}, \"objects\": {\"73007804786395\": [\"gooseneck kettle\", \"coffee dripper\", \"digital scale\", \"white mug\"], \"73025807613779\": [\"gooseneck kettle\", \"coffee dripper\", \"digital scale\", \"white mug\"]}, \"interaction\": {\"73007804786395\": \"right hand grasping the handle of the gooseneck kettle\", \"73025807613779\": \"right hand holding the gooseneck kettle near the coffee dripper\"}, \"api_call_start\": \"2026-03-17T03:45:49.237824\", \"api_call_end\": \"2026-03-17T03:45:52.781351\", \"tokens_in\": 11799, \"tokens_out\": 279}, {\"segment_id\": 10, \"start_frame\": \"73027806191030\", \"end_frame\": \"73047757139373\", \"Sub Task\": \"Set down kettle and retrieve white bottle\", \"Current Action\": [{\"label\": \"Move kettle away\", \"description\": \"The user moves the gooseneck kettle away from the coffee dripper after pouring.\", \"start_frame\": 73027806191030, \"end_frame\": 73033804784033}, {\"label\": \"Place kettle on table\", \"description\": \"The user sets the kettle down on the table surface next to the dripper.\", \"start_frame\": 73035804786534, \"end_frame\": 73039804785786}, {\"label\": \"Pick up white bottle\", \"description\": \"The user reaches for and picks up the white bottle containing coffee beans or grounds.\", \"start_frame\": 73041804785787, \"end_frame\": 73045804785497}], \"sampled_frames\": {\"Image 1\": 73027806191030, \"Image 2\": 73029804786406, \"Image 3\": 73031804786699, \"Image 4\": 73033804784033, \"Image 5\": 73035804786534, \"Image 6\": 73037804785326, \"Image 7\": 73039804785786, \"Image 8\": 73041804785787, \"Image 9\": 73043804785746, \"Image 10\": 73045804785497}, \"objects\": {\"73027806191030\": [\"gooseneck kettle\", \"coffee dripper\", \"scale\", \"white bottle\"], \"73033804784033\": [\"gooseneck kettle\", \"coffee dripper\", \"scale\", \"white bottle\"], \"73039804785786\": [\"gooseneck kettle\", \"coffee dripper\", \"scale\", \"white bottle\"], \"73045804785497\": [\"gooseneck kettle\", \"coffee dripper\", \"scale\", \"white bottle\"]}, \"interaction\": {\"73027806191030\": \"hand holding gooseneck kettle and moving it away from the dripper\", \"73035804786534\": \"hand placing the kettle down on the table\", \"73041804785787\": \"hand reaching for the white bottle\", \"73045804785497\": \"hand grasping the white bottle\"}, \"api_call_start\": \"2026-03-17T03:45:53.784466\", \"api_call_end\": \"2026-03-17T03:45:57.787444\", \"tokens_in\": 11791, \"tokens_out\": 559}, {\"segment_id\": 11, \"start_frame\": \"73047804785956\", \"end_frame\": \"73057754786294\", \"Sub Task\": \"Pour and close white bottle\", \"Current Action\": [{\"label\": \"Pour liquid from white bottle\", \"description\": \"The person holds a white bottle and pours a liquid into the coffee dripper setup on the scale.\", \"start_frame\": 73047804785956, \"end_frame\": 73051804786250}, {\"label\": \"Close bottle cap\", \"description\": \"The person sets down the white bottle and uses their hand to secure or tighten the cap. The user holds the white bottle and maintains a position over the coffee setup on the table.\", \"start_frame\": 73053807836376, \"end_frame\": 73075804786386}], \"sampled_frames\": {\"Image 1\": 73047804785956, \"Image 2\": 73049805210540, \"Image 3\": 73051804786250, \"Image 4\": 73053807836376, \"Image 5\": 73055804786085}, \"objects\": {\"73047804785956\": [\"white bottle\", \"coffee dripper\", \"scale\"], \"73051804786250\": [\"white bottle\", \"coffee dripper\", \"scale\"], \"73053807836376\": [\"white bottle\"], \"73055804786085\": [\"white bottle\"]}, \"interaction\": {\"73047804785956\": \"holding and tilting the white bottle to dispense liquid into the dripper\", \"73051804786250\": \"finishing the pour and moving the bottle away\", \"73053807836376\": \"capping the white bottle with fingers\", \"73055804786085\": \"securing the cap on the bottle\"}, \"api_call_start\": \"2026-03-17T03:45:58.789566\", \"api_call_end\": \"2026-03-17T03:46:03.074122\", \"tokens_in\": 6242, \"tokens_out\": 438}, {\"segment_id\": 12, \"start_frame\": \"73057804785211\", \"end_frame\": \"73077754786887\", \"Sub Task\": \"Move bottle to coffee equipment\", \"Current Action\": [], \"sampled_frames\": {\"Image 1\": 73057804785211, \"Image 2\": 73059804786337, \"Image 3\": 73061804786546, \"Image 4\": 73063804785839, \"Image 5\": 73065804784506, \"Image 6\": 73067804789382, \"Image 7\": 73069807176633, \"Image 8\": 73071804785468, \"Image 9\": 73073804786094, \"Image 10\": 73075804786386}, \"objects\": {\"73057804785211\": [\"white bottle\", \"coffee dripper\", \"scale\", \"mug\"], \"73063804785839\": [\"white bottle\", \"coffee dripper\", \"scale\"], \"73075804786386\": [\"white bottle\", \"coffee dripper\", \"scale\"]}, \"interaction\": {\"73057804785211\": \"hand grasping the white bottle\", \"73065804784506\": \"hand holding the white bottle over the workspace\", \"73075804786386\": \"hand maintaining grip on the white bottle\"}, \"api_call_start\": \"2026-03-17T03:46:05.694694\", \"api_call_end\": \"2026-03-17T03:46:09.125227\", \"tokens_in\": 11794, \"tokens_out\": 306}, {\"segment_id\": 13, \"start_frame\": \"73077804786721\", \"end_frame\": \"73097754787063\", \"Sub Task\": \"Prepare for pouring\", \"Current Action\": [{\"label\": \"Place item on table\", \"description\": \"The user finishes setting down a small container or tool on the table near the other coffee brewing equipment.\", \"start_frame\": 73077804786721, \"end_frame\": 73081807242056}, {\"label\": \"Wait/Prepare for pouring\", \"description\": \"The user pauses with hands near the coffee equipment and container, adjusting their position before starting the pour. The user is waiting and observing the setup on the table, with hands positioned near the coffee brewing equipment before initiating the pour.\", \"start_frame\": 73083805808015, \"end_frame\": 73105804890317}], \"sampled_frames\": {\"Image 1\": 73077804786721, \"Image 2\": 73079804786430, \"Image 3\": 73081807242056, \"Image 4\": 73083805808015, \"Image 5\": 73085804980516, \"Image 6\": 73087804785642, \"Image 7\": 73089804785601, \"Image 8\": 73091806087019, \"Image 9\": 73093805049020, \"Image 10\": 73095804786354}, \"objects\": {\"73077804786721\": [\"coffee equipment\", \"small bottle\", \"white mug\", \"weighing scale\"], \"73081807242056\": [\"coffee equipment\", \"small bottle\", \"white mug\", \"weighing scale\"], \"73085804980516\": [\"coffee equipment\", \"small bottle\", \"white mug\", \"weighing scale\"], \"73095804786354\": [\"coffee equipment\", \"small bottle\", \"white mug\", \"weighing scale\"]}, \"interaction\": {\"73077804786721\": \"Hand placing the small bottle on the table surface\", \"73081807242056\": \"Hands released from objects, resting near the brewing station\", \"73095804786354\": \"Hands positioned near the coffee equipment, ready for the next step\"}, \"api_call_start\": \"2026-03-17T03:46:10.128242\", \"api_call_end\": \"2026-03-17T03:46:15.252663\", \"tokens_in\": 11792, \"tokens_out\": 456}, {\"segment_id\": 14, \"start_frame\": \"73097804786313\", \"end_frame\": \"73107754785443\", \"Sub Task\": \"Prepare for pouring\", \"Current Action\": [], \"sampled_frames\": {\"Image 1\": 73097804786313, \"Image 2\": 73099807218898, \"Image 3\": 73101804786357, \"Image 4\": 73103804786400, \"Image 5\": 73105804890317}, \"objects\": {\"73097804786313\": [\"white coffee cup\", \"digital scale with dripper\", \"water bottle\", \"metal pitcher\", \"glass carafe\"], \"73105804890317\": [\"white coffee cup\", \"digital scale with dripper\", \"water bottle\", \"metal pitcher\", \"glass carafe\"]}, \"interaction\": {\"73097804786313\": \"hands resting near the coffee brewing equipment on the table\", \"73105804890317\": \"hands slightly adjusted in preparation for interacting with the equipment\"}, \"api_call_start\": \"2026-03-17T03:46:16.254304\", \"api_call_end\": \"2026-03-17T03:46:19.145446\", \"tokens_in\": 6239, \"tokens_out\": 284}, {\"segment_id\": 15, \"start_frame\": \"73107806911651\", \"end_frame\": \"73127754784619\", \"Sub Task\": \"Pour coffee\", \"Current Action\": [{\"label\": \"Pour coffee\", \"description\": \"The person holds the carafe containing brewed coffee and pours it into the waiting coffee mug. The user holds a milk pitcher and pours milk into the cup containing coffee to create latte art or mixed coffee.\", \"start_frame\": 73107806911651, \"end_frame\": 73145804786211}], \"sampled_frames\": {\"Image 1\": 73107806911651, \"Image 2\": 73109804787027, \"Image 3\": 73111804786695, \"Image 4\": 73113807475029, \"Image 5\": 73115804785697, \"Image 6\": 73117806777990, \"Image 7\": 73119806904366, \"Image 8\": 73121804785866, \"Image 9\": 73123806254159, \"Image 10\": 73125804787452}, \"objects\": {\"73107806911651\": [\"carafe\", \"coffee mug\", \"scale\"], \"73125804787452\": [\"carafe\", \"coffee mug\", \"scale\"]}, \"interaction\": {\"73107806911651\": \"The right hand is gripping the handle of the coffee carafe to initiate pouring.\", \"73117806777990\": \"The right hand is tilting the carafe to pour coffee into the mug.\", \"73125804787452\": \"The right hand holds the empty carafe after completing the pour.\"}, \"api_call_start\": \"2026-03-17T03:46:21.725368\", \"api_call_end\": \"2026-03-17T03:46:25.147646\", \"tokens_in\": 11790, \"tokens_out\": 287}, {\"segment_id\": 16, \"start_frame\": \"73127804787994\", \"end_frame\": \"73147754784504\", \"Sub Task\": \"Pour milk into coffee\", \"Current Action\": [], \"sampled_frames\": {\"Image 1\": 73127804787994, \"Image 2\": 73129804787662, \"Image 3\": 73131804787455, \"Image 4\": 73133804786456, \"Image 5\": 73135804787748, \"Image 6\": 73137804790374, \"Image 7\": 73139804786042, \"Image 8\": 73141804787584, \"Image 9\": 73143804786127, \"Image 10\": 73145804786211}, \"objects\": {\"73127804787994\": [\"milk pitcher\", \"coffee cup\", \"digital scale\", \"bottle\"], \"73133804786456\": [\"milk pitcher\", \"coffee cup\", \"digital scale\", \"bottle\"], \"73145804786211\": [\"milk pitcher\", \"coffee cup\", \"digital scale\", \"bottle\"]}, \"interaction\": {\"73127804787994\": \"The user is holding the milk pitcher over the coffee cup, initiating the pour.\", \"73133804786456\": \"The user is carefully pouring the milk into the cup with coffee, controlling the flow.\", \"73145804786211\": \"The milk continues to be poured into the coffee, creating a swirling motion in the cup.\"}, \"api_call_start\": \"2026-03-17T03:46:26.150785\", \"api_call_end\": \"2026-03-17T03:46:29.255437\", \"tokens_in\": 11787, \"tokens_out\": 341}, {\"segment_id\": 17, \"start_frame\": \"73147804786004\", \"end_frame\": \"frame_0005822\", \"Sub Task\": \"Pour milk into coffee\", \"Current Action\": [{\"label\": \"Pour milk into coffee\", \"description\": \"The user holds a stainless steel milk pitcher in their right hand and pours milk into the mug containing coffee, which is stabilized by their left hand.\", \"start_frame\": 73147804786004, \"end_frame\": 73147804786004}], \"sampled_frames\": {\"Image 1\": 73147804786004}, \"objects\": {\"73147804786004\": [\"coffee mug\", \"stainless steel milk pitcher\", \"table\", \"milk bottle\", \"digital scale\"]}, \"interaction\": {\"73147804786004\": \"The right hand is tilting the milk pitcher to pour milk into the coffee mug, while the left hand holds the mug steady on the table.\"}, \"api_call_start\": \"2026-03-17T03:46:30.257250\", \"api_call_end\": \"2026-03-17T03:46:32.286227\", \"tokens_in\": 1789, \"tokens_out\": 241}]}"
+  },
+  "depth": {
+    "type": "group"
+  },
+  "depth/confidence": {
+    "type": "dataset",
+    "shape": [
+      8,
+      256,
+      256
+    ],
+    "dtype": "uint8"
+  },
+  "depth/depth": {
+    "type": "dataset",
+    "shape": [
+      8,
+      256,
+      256
+    ],
+    "dtype": "float32"
+  },
+  "depth/depth_max": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "float64",
+    "value": 2.67332124710083
+  },
+  "depth/depth_min": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "float64",
+    "value": 0.16499313712120056
+  },
+  "depth/scale": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "float64",
+    "value": 0.5
+  },
+  "full_body_mocap": {
+    "type": "group"
+  },
+  "full_body_mocap/Ts_world_cpf": {
+    "type": "dataset",
+    "shape": [
+      8,
+      7
+    ],
+    "dtype": "float32"
+  },
+  "full_body_mocap/Ts_world_root": {
+    "type": "dataset",
+    "shape": [
+      8,
+      7
+    ],
+    "dtype": "float32"
+  },
+  "full_body_mocap/betas": {
+    "type": "dataset",
+    "shape": [
+      8,
+      16
+    ],
+    "dtype": "float32"
+  },
+  "full_body_mocap/body_quats": {
+    "type": "dataset",
+    "shape": [
+      8,
+      21,
+      4
+    ],
+    "dtype": "float32"
+  },
+  "full_body_mocap/contacts": {
+    "type": "dataset",
+    "shape": [
+      8,
+      21
+    ],
+    "dtype": "float32"
+  },
+  "full_body_mocap/frame_nums": {
+    "type": "dataset",
+    "shape": [
+      8
+    ],
+    "dtype": "int64"
+  },
+  "full_body_mocap/keypoints": {
+    "type": "dataset",
+    "shape": [
+      8,
+      52,
+      3
+    ],
+    "dtype": "float32"
+  },
+  "full_body_mocap/left_hand_quats": {
+    "type": "dataset",
+    "shape": [
+      8,
+      15,
+      4
+    ],
+    "dtype": "float32"
+  },
+  "full_body_mocap/right_hand_quats": {
+    "type": "dataset",
+    "shape": [
+      8,
+      15,
+      4
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap": {
+    "type": "group"
+  },
+  "hand_mocap/left_joints_3d": {
+    "type": "dataset",
+    "shape": [
+      8,
+      21,
+      3
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap/left_mano_hand_betas": {
+    "type": "dataset",
+    "shape": [
+      8,
+      10
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap/left_mano_hand_global_orient": {
+    "type": "dataset",
+    "shape": [
+      8,
+      9
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap/left_mano_hand_pose": {
+    "type": "dataset",
+    "shape": [
+      8,
+      135
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap/left_translation": {
+    "type": "dataset",
+    "shape": [
+      8,
+      3
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap/right_joints_3d": {
+    "type": "dataset",
+    "shape": [
+      8,
+      21,
+      3
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap/right_mano_hand_betas": {
+    "type": "dataset",
+    "shape": [
+      8,
+      10
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap/right_mano_hand_global_orient": {
+    "type": "dataset",
+    "shape": [
+      8,
+      9
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap/right_mano_hand_pose": {
+    "type": "dataset",
+    "shape": [
+      8,
+      135
+    ],
+    "dtype": "float32"
+  },
+  "hand_mocap/right_translation": {
+    "type": "dataset",
+    "shape": [
+      8,
+      3
+    ],
+    "dtype": "float32"
+  },
+  "imu": {
+    "type": "group"
+  },
+  "imu/accel_xyz": {
+    "type": "dataset",
+    "shape": [
+      80,
+      3
+    ],
+    "dtype": "float64"
+  },
+  "imu/device_timestamp_ns": {
+    "type": "dataset",
+    "shape": [
+      80
+    ],
+    "dtype": "float64"
+  },
+  "imu/gyro_xyz": {
+    "type": "dataset",
+    "shape": [
+      80,
+      3
+    ],
+    "dtype": "float64"
+  },
+  "imu/keyframe_indices": {
+    "type": "dataset",
+    "shape": [
+      8
+    ],
+    "dtype": "int64"
+  },
+  "metadata": {
+    "type": "group"
+  },
+  "metadata/body_height": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "float64",
+    "value": 1.78
+  },
+  "metadata/device_id": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "7211577584"
+  },
+  "metadata/device_version": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "v2"
+  },
+  "metadata/health_report": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "{\n  \"generated_at\": \"2026-03-09T15:38:37.288949+00:00\",\n  \"recordings\": [\n    {\n      \"failures\": [],\n      \"file_integrity\": {\n        \"complete\": true,\n        \"expected\": {\n          \"files\": [\n            \"imu.csv\",\n            \"metadata.json\",\n            \"mjpeg.bin\"\n          ],\n          \"missing\": [],\n          \"wav_found\": [\n            \"20260213_120959.282153338-20260213_121546.857668503.wav\"\n          ],\n          \"wav_missing\": false,\n          \"wav_required\": true\n        },\n        \"failed\": 0,\n        \"files\": [\n          {\n            \"details\": {},\n            \"error\": null,\n            \"ext\": \"bin\",\n            \"ok\": true,\n            \"path\": \"/workspace/mnt/recordings/1850/mjpeg.bin\",\n            \"size\": 2142757639,\n            \"size_human\": \"2.00 GB\"\n          },\n          {\n            \"details\": {},\n            \"error\": null,\n            \"ext\": \"json\",\n            \"ok\": true,\n            \"path\": \"/workspace/mnt/recordings/1850/metadata.json\",\n            \"size\": 59,\n            \"size_human\": \"59 B\"\n          },\n          {\n            \"details\": {\n              \"has_header\": true\n            },\n            \"error\": null,\n            \"ext\": \"csv\",\n            \"ok\": true,\n            \"path\": \"/workspace/mnt/recordings/1850/imu.csv\",\n            \"size\": 8020338,\n            \"size_human\": \"7.65 MB\"\n          },\n          {\n            \"details\": {\n              \"channels\": 1,\n              \"duration_sec\": 347.5562811791383,\n              \"frame_count\": 15327232,\n              \"frame_rate\": 44100,\n              \"sample_width\": 2\n            },\n            \"error\": null,\n            \"ext\": \"wav\",\n            \"ok\": true,\n            \"path\": \"/workspace/mnt/recordings/1850/20260213_120959.282153338-20260213_121546.857668503.wav\",\n            \"size\": 30654508,\n            \"size_human\": \"29.23 MB\"\n          }\n        ],\n        \"ok\": 4,\n        \"total\": 4,\n        \"wav_files\": [\n          \"20260213_120959.282153338-20260213_121546.857668503.wav\"\n        ]\n      },\n      \"frame_drops\": {\n        \"cam\": {\n          \"avg_interval_ns\": 49992797,\n          \"drop_event_count\": 0,\n          \"drop_events\": [],\n          \"drop_rate\": 0.0,\n          \"expected_fps\": 20.0,\n          \"expected_interval_ns\": 50000000,\n          \"max_interval_ns\": 53788375,\n          \"min_interval_ns\": 0,\n          \"ok\": true,\n          \"threshold_ns\": 200000000,\n          \"total_samples\": 6943\n        },\n        \"imu\": {\n          \"avg_interval_ns\": 5011487,\n          \"drop_event_count\": 0,\n          \"drop_events\": [],\n          \"drop_rate\": 0.0,\n          \"expected_fps\": 200.0,\n          \"expected_interval_ns\": 5000000,\n          \"max_interval_ns\": 9075500,\n          \"min_interval_ns\": 947333,\n          \"ok\": true,\n          \"threshold_ns\": 20000000,\n          \"total_samples\": 69251\n        }\n      },\n      \"min_frame_drop_events_for_failure\": 3,\n      \"mjpeg_corruption\": {\n        \"corrupted_count\": 0,\n        \"corrupted_frames\": [],\n        \"duration_sec\": 347.050000582,\n        \"errors\": [],\n        \"max_consecutive_corrupted\": 0,\n        \"ok\": true,\n        \"path\": \"/workspace/mnt/recordings/1850/mjpeg.bin\",\n        \"total_frames\": 6943,\n        \"truncated\": false,\n        \"version\": 2\n      },\n      \"ok\": true,\n      \"path\": \"/workspace/mnt/recordings/1850\",\n      \"wav_mjpeg_overlap\": {\n        \"errors\": [],\n        \"gap_sec\": 0.0,\n        \"mjpeg_time_range_host_ns\": [\n          1770984599869762796,\n          1770984946929664462\n        ],\n        \"ok\": true,\n        \"overlap_sec\": 346.987905707,\n        \"wav_time_range_host_ns\": [\n          1770984599282153338,\n          1770984946857668503\n        ]\n      }\n    }\n  ],\n  \"root\": \"/workspace/mnt/recordings/1850\"\n}"
+  },
+  "metadata/other": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "{}"
+  },
+  "metadata/time_created": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "object",
+    "value": "2026-03-09T18:06:14.358989+00:00"
+  },
+  "slam": {
+    "type": "group"
+  },
+  "slam/frame_names": {
+    "type": "dataset",
+    "shape": [
+      8
+    ],
+    "dtype": "|S18"
+  },
+  "slam/point_cloud": {
+    "type": "dataset",
+    "shape": [
+      4089,
+      3
+    ],
+    "dtype": "float64"
+  },
+  "slam/quat_wxyz": {
+    "type": "dataset",
+    "shape": [
+      8,
+      4
+    ],
+    "dtype": "float64"
+  },
+  "slam/trans_xyz": {
+    "type": "dataset",
+    "shape": [
+      8,
+      3
+    ],
+    "dtype": "float64"
+  },
+  "video": {
+    "type": "group"
+  },
+  "video/device_timestamp": {
+    "type": "dataset",
+    "shape": [
+      8
+    ],
+    "dtype": "|S14"
+  },
+  "video/frame_number": {
+    "type": "dataset",
+    "shape": [
+      8
+    ],
+    "dtype": "int64"
+  },
+  "video/length_sec": {
+    "type": "dataset",
+    "shape": [],
+    "dtype": "float64",
+    "value": 0.34705275
+  }
+}
