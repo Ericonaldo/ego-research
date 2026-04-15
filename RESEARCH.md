@@ -9,6 +9,12 @@
 - 哪些数据集访问门槛低，哪些需要人工审批、协议签署或重基础设施
 - `Xperience-10M` 这类新数据与 `Aria` / `Ego4D` 相比，到底新在哪里
 
+更完整、面向“公开可访问数据目录”的版本见：
+
+- [OPEN_EGOCENTRIC_DATASETS.md](./OPEN_EGOCENTRIC_DATASETS.md)
+- [TASK_TO_DATASET_GUIDE.md](./TASK_TO_DATASET_GUIDE.md)
+- [ACCESS_INFRA_COSTS.md](./ACCESS_INFRA_COSTS.md)
+
 ### 1.1 判断一个 egocentric 数据集的关键维度
 
 | 维度 | 关注点 |

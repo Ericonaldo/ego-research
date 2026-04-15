@@ -28,6 +28,9 @@
 ## 根目录文档
 
 - [RESEARCH.md](./RESEARCH.md): Aria、Ego4D / Ego-Exo4D、Xperience-10M 的横向比较
+- [OPEN_EGOCENTRIC_DATASETS.md](./OPEN_EGOCENTRIC_DATASETS.md): 更完整的公开 egocentric dataset 全景目录
+- [TASK_TO_DATASET_GUIDE.md](./TASK_TO_DATASET_GUIDE.md): 按任务选数据集的实用指南
+- [ACCESS_INFRA_COSTS.md](./ACCESS_INFRA_COSTS.md): 按访问门槛、存储和预处理成本选数据集
 - [RESEARCH_PAPERS.md](./RESEARCH_PAPERS.md): 相关论文、基准与工具链
 - [DOWNLOAD_GUIDE.md](./DOWNLOAD_GUIDE.md): 跨数据集访问与下载说明
 
